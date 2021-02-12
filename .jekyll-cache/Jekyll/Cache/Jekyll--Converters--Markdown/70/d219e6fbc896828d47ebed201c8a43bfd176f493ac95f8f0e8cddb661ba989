@@ -1,15 +1,4 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset='utf-8'>
-	<title> Book Notes</title>
-</head>
-<body>
-	<nav>
-	<a href='/' >Home</a>
-	<a href='/booknotes.html'  style= "background-color:  #e1e7f7; font-weight: bold;">Booknotes</a>
-</nav>
-	<h1 id="book-summaries">Book Summaries</h1>
+I"�<h1 id="book-summaries">Book Summaries</h1>
 
 <p>Just a place to record thoughts on books…</p>
 
@@ -36,9 +25,7 @@ put forth by <a href="https://en.wikipedia.org/wiki/Howard_Gardner">Howard Gardn
 
 <h3 id="identifyng-ones-own-emotion">Identifyng One’s Own Emotion</h3>
 
-<p>Navigating life well requires us to maintain some gauge on our own internal mental states. There are a few levels of this kind of metacognition. On one end, we can be fully engulfed in the moment’s intense emotions. On the other, self-awareness and control. Presumably the neocortex is involved in the ability to become aware of our own feelings. <a href="https://en.wikipedia.org/wiki/Alexithymia">Alexithymia</a> is a condition in which an individual has difficulting expressing and describing emotion, either self emotion or others. Emotions may still happen, but the cause is not clear.</p>
+<p>Navigating life well requires us to maintain some gauge on our own internal mental states. There are a few levels of this kind of metacognition. On one end, we can be fully engulfed in the moment’s intense emotions. On the other, self-awareness and control. Presumably the neocortex is involved in the ability to become aware of our own feelings.</p>
 
-	
-	
-</body>
-</html>
+<p><a href="https://en.wikipedia.org/wiki/Alexithymia">Alexithymia</a> is a condition in which an individual has difficulting expressing and describing emotion, either self emotion or others. Emotions may still happen, but the cause is not clear.</p>
+:ET
