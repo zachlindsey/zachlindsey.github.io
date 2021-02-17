@@ -89,7 +89,7 @@ plt.show()
 and the results!
 
 ![Solve Times](/images/solve_times.png)
-![Solve Probability](/images.solve_probs.png)
+![Solve Probability](/images/solve_probs.png)
 
 Note the *sharp* drop in in whether or not a problem is solvable that happens around $m/n = 4.5$. Intuitively, problems to the left of that cliff have few clauses, but many variables. This means that they tend to be *underconstrained*, and so guessing a solution is quite easy! On the other hand, problems on the right side of the cliff have many constraints but few variables. So they are *overconstrained*, and our SAT solver can pretty quickly discover some contradiction that throws out the possibility of a solution.
 
