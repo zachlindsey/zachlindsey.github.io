@@ -1,11 +1,16 @@
 ---
 title: Math & Code Blog
 layout: default
+use_math: true
 ---
 
 # The Satisfiability Threshold Conjecture
 
-I recently learned about this conjecture that still remains open, despite being a fairly basic observation. It's about random CNF SAT problems, so let's introduce that. CNF stands for *conjuctive normal form*, and is a restricted form of logical sentences. A sentence is in CNF is it of the form $$C_1 \wedge C_2 \wedge \ldots \wedge C_n$$, where each $C_i$ is a *clause*. A clause has the form $l_1 \vee l_2 \ldots \vee l_m$, where each $l_i$ is a *literal*, which can be either a simple propositional variable $x_i$ or its negation $\neg x_i$.
+I recently learned about this conjecture that still remains open, despite being a fairly basic observation. It's about random CNF SAT problems, so let's introduce that. CNF stands for *conjuctive normal form*, and is a restricted form of logical sentences. A sentence is in CNF is it of the form 
+
+\[[C_1 \wedge C_2 \wedge \ldots \wedge C_n,\]]
+
+where each $C_i$ is a *clause*. A clause has the form $l_1 \vee l_2 \ldots \vee l_m$, where each $l_i$ is a *literal*, which can be either a simple propositional variable $x_i$ or its negation $\neg x_i$.
 
 It's not hard to work out that any sentence in propositional logic (only the most basic logical operations: and, or, not, implies and atomic proposition symbols) can be written in this form, and so this makes for a very clean way to boil down complicated statements to a simple format. We can now think about random sentences in CNF. Let $\mbox{CNF}_k(m,n)$ denote the sentences in CNF with $m$ clauses with exactly $k$ literals chosen from $n$ propositional symbols. We can create "random" sentences by drawing uniformly without replacement from this set. As an example, if $k = 3, m = 4, n = 5$, we can form a clause out of the symbols P, Q, R, S, T. We need to make 4 random ones with 3 symbols each, so one might look like...
 
@@ -16,7 +21,7 @@ It's not hard to work out that any sentence in propositional logic (only the mos
 
 For fun, try working out whether or not you can assign TRUE/FALSE to each to make all four statements true.
 
-And now the question: What is the probability that a sentence chosen from $\mbox{CNF}_k(m,n)$ is solvable? That is, is the an assignment of true or false to the variables that makes all the clauses true? Can we estimate how long it will take to solve?
+And now the question: What is the probability that a sentence chosen from $\mbox{CNF}_k(m,n)$ is solvable? That is, is there an assignment of true or false to the variables that makes all the clauses true? Can we estimate how long it will take to solve?
 
 ## Experiments
 
