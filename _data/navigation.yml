@@ -1,0 +1,6 @@
+- name: Home
+  link: /
+- name: Booknotes
+  link: /booknotes.html
+- name: Tech Blog
+  link: /blogs.html
