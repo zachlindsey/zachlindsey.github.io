@@ -34,7 +34,7 @@ Emotions also form a foundational part of our decision making process, even when
 
 ### Managing One's Own Emotion
 
-After recognizing you are having some kind of emotion, what do you do? Each has its own helpful strategies.
+After recognizing you are having some kind of emotion, what do you do? Each has its own helpful strategies, but the two main techniques seem to be challenging or reframing the roots of the emotion and distracting ourselves from it.
 
 #### Anger
 
@@ -50,3 +50,8 @@ Worrying is useful for anticipating and planning for future harms, but when no s
 
 Some sadness is healthy, especially after something sad has happened. It gives us space to reflect on the lost person or thing and build a narrative that allows healing. Prolonged or unexplained sadness, however, is problematic. Like both anger and worry, it can often seem right to immerse ourselves in the sadness, thinking that exploring it fully will help us get rid of it, but that's often not the case. Distraction and challenging are more effective.
 
+Distractions should be something upbeat if possible, to avoid feeding the melancholy. Reading, exercising, watching TV, or playing video games are helpful. Just be sure that the distraction won't leave you more depressed, like eating, shopping, or social media surfing might.
+
+#### Motivation
+
+Top performers in any activity must find the correct mindset to practice for hours a day and stay positive, upbeat, and focused. This ability to delay gratification can be measured in children with the "[marshmallow test](https://en.wikipedia.org/wiki/Stanford_marshmallow_experiment)", in which children must ensure the temptation of one marshmallow for the reward of a second marshmallow. Being able to pull off this feat is correlated with many measurements of "success", like high SAT scores, low BMI, etc., many years later.
