@@ -55,3 +55,10 @@ Distractions should be something upbeat if possible, to avoid feeding the melanc
 #### Motivation
 
 Top performers in any activity must find the correct mindset to practice for hours a day and stay positive, upbeat, and focused. This ability to delay gratification can be measured in children with the "[marshmallow test](https://en.wikipedia.org/wiki/Stanford_marshmallow_experiment)", in which children must ensure the temptation of one marshmallow for the reward of a second marshmallow. Being able to pull off this feat is correlated with many measurements of "success", like high SAT scores, low BMI, etc., many years later.
+
+Anxiety and motivation have an interesting relationship. No anxiety at all might make you feel overconfident about you abilities, and so you'll not put in work. Too much anxiety, on the other hand, constricts thought and saps the mind of resources better allocated to the task at hand.
+
+Hope and optimism are other emotions that accompany motivation for success. People who are not burdened with doubts or view failures as external, changeable obstacles usually excel over those who believe that failures originate from fixed character flaws. The good news is that hope and optimism can actually be learned!
+
+Finally, the notion of [flow](https://en.wikipedia.org/wiki/Flow_(psychology)) ties in with motivation. In flow, a person is hyperfocused at a task which challenges them and they have mastery. The experience is emotionally rewarding, and so finding ways for students to match up skill with difficulty to encourage the flow state can improve motivation to learn and practice. Erring on this balance can lead to boredom on one hand or stress on the other.
+
