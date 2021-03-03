@@ -62,3 +62,10 @@ Hope and optimism are other emotions that accompany motivation for success. Peop
 
 Finally, the notion of [flow](https://en.wikipedia.org/wiki/Flow_(psychology)) ties in with motivation. In flow, a person is hyperfocused at a task which challenges them and they have mastery. The experience is emotionally rewarding, and so finding ways for students to match up skill with difficulty to encourage the flow state can improve motivation to learn and practice. Erring on this balance can lead to boredom on one hand or stress on the other.
 
+### Empathy
+
+Our ability to read others' emotions begins while we are still babies. Young children exhibit [motor mimicry](http://web.uvic.ca/psyc/bavelas/Motor_mimicry.html), for instance. Also, infants look to parents for emotional guidance  and validation in a process called *attunement*. Misattuned children have trouble socializing, as some key neural structures are built up in this attunement process.
+
+Studies in other animals' brains finds specialized areas for decoding emotion-laden gestures and other primates have been observed comforting each other, so the skill of understanding other's feelings is not unique to humans.
+
+
