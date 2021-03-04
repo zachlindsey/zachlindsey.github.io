@@ -68,4 +68,8 @@ Our ability to read others' emotions begins while we are still babies. Young chi
 
 Studies in other animals' brains finds specialized areas for decoding emotion-laden gestures and other primates have been observed comforting each other, so the skill of understanding other's feelings is not unique to humans.
 
+Empathy might be at the root of justice, as evidenced by how those with high scores on empathy tests also sjow more willingness to intervene to prevent harm to others. Conversely, people with a lack of empathy, either misunderstanding or totally unresponsive to other's pain, can commit heinous acts.
 
+### Spreading and Manipulating Emotion
+
+Social success rests on the ability to not only understand other's emotions, but respond to them correctly and broadcast appropriate emotional signals. Each cultural setting has some set of *display rules* that dictates how emotions must be suppressed, exaggerated, or substituted.
