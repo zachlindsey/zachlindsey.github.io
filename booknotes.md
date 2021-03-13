@@ -72,4 +72,20 @@ Empathy might be at the root of justice, as evidenced by how those with high sco
 
 ### Spreading and Manipulating Emotion
 
-Social success rests on the ability to not only understand other's emotions, but respond to them correctly and broadcast appropriate emotional signals. Each cultural setting has some set of *display rules* that dictates how emotions must be suppressed, exaggerated, or substituted.
+Social success rests on the ability to not only understand other's emotions, but respond to them correctly and broadcast appropriate emotional signals. Each cultural setting has some set of *display rules* that dictates how emotions must be suppressed, exaggerated, or substituted. The signals are often nonverbal, and picking up on them at a young age is essential. Children with [dyssemia](https://en.wikipedia.org/wiki/Dyssemia), a deficiency of nonverbal communication skills, can have tremendous difficulty getting along with peers and even adults, weighing down social and academic progress. On the other extreme, a person *too* suscpetible to other's emotions, merely blending in with the other at the expense of staying true to the self, can wind up with shallow relationships.
+
+The book lists four different facets of interpersonal intelligence, all of which use verbal and nonverbal communication.
+1. organizing groups
+2. mediating disputes
+3. personal connection
+4. social analysis
+
+## Managing Relationships
+
+This chapter is about marriage, but I find some of the statements about problematic, since the advice basically applies to any relationship! I will pass on one observation: very young children have roughly equal proportions of boys and girls in friend groups. However, this changes, and the two groups separate into distinct social groups. They are also treated differently, encouraged to play different games, and allowed to display emotions differently. Probably lots of gender identity is planted during these years.
+
+Anyway, the relationship tips are basically the following:
+1. When delivering critism, avoid personal attacks or absolutes about the person. Focus on the action, how it makes you feel, and how to correct it.
+2. Emotions like contempt are corrosive to healthly relationships, and must not fester or be signalled.
+3. When taking critism, avoid becoming defensive. Fight the urge to view the criticism as an attack you must win, and frame it as a way to work together for improvement.
+4. Tone down negative "emotional background thoughts", which are those negative statements you make to yourself. This not only goes with thoughts about others, but self-deprecating thoughts, too. They lower the threshold for stronger, negative emotion, and they can be inadventently broadcast to others.
