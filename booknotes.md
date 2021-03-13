@@ -80,7 +80,7 @@ The book lists four different facets of interpersonal intelligence, all of which
 3. personal connection
 4. social analysis
 
-## Managing Relationships
+### Managing Relationships
 
 This chapter is about marriage, but I find some of the statements about problematic, since the advice basically applies to any relationship! I will pass on one observation: very young children have roughly equal proportions of boys and girls in friend groups. However, this changes, and the two groups separate into distinct social groups. They are also treated differently, encouraged to play different games, and allowed to display emotions differently. Probably lots of gender identity is planted during these years.
 
