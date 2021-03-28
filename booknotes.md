@@ -82,10 +82,19 @@ The book lists four different facets of interpersonal intelligence, all of which
 
 ### Managing Relationships
 
-This chapter is about marriage, but I find some of the statements about problematic, since the advice basically applies to any relationship! I will pass on one observation: very young children have roughly equal proportions of boys and girls in friend groups. However, this changes, and the two groups separate into distinct social groups. They are also treated differently, encouraged to play different games, and allowed to display emotions differently. Probably lots of gender identity is planted during these years.
+This chapter is about marriage, but I find some of the statements about it problematic, since the advice basically applies to any relationship! I will pass on one observation: very young children have roughly equal proportions of boys and girls in friend groups. However, this changes, and the two groups separate into distinct social groups. They are also treated differently, encouraged to play different games, and allowed to display emotions differently. Probably lots of gender identity is planted during these years.
 
 Anyway, the relationship tips are basically the following:
 1. When delivering critism, avoid personal attacks or absolutes about the person. Focus on the action, how it makes you feel, and how to correct it.
 2. Emotions like contempt are corrosive to healthly relationships, and must not fester or be signalled.
 3. When taking critism, avoid becoming defensive. Fight the urge to view the criticism as an attack you must win, and frame it as a way to work together for improvement.
 4. Tone down negative "emotional background thoughts", which are those negative statements you make to yourself. This not only goes with thoughts about others, but self-deprecating thoughts, too. They lower the threshold for stronger, negative emotion, and they can be inadventently broadcast to others.
+5. Practice listening, calm, and empathy when having discussions. Keep both your feelings and the other's in mind.
+
+### Relationships in the Workplace
+
+Most of the tips from the above carry over to the workplace. Some special emphasis is placed on delivering feedback and criticism, since overly harsh or insensitive delivery can destroy motivation and performance. When giving feedback, it's best to focus on the performance, not the person. Offer ways to improve instead of just declaring the work is unsatisfactory and be sensitive in delivey. On the other end, keep in mind that feedback is a way to improve together, not a personal attack.
+
+Being emotionally competent is especially necessary as we move into the "knoweldge economy". A study in Bell labs found that the superstars were not necessarily the most brilliant individuals, but rather those who had strong social networks. When a problem arose, these people had networks they could tap into to get the information and technical expertise they lacked. Some of the different types of social networks include communcation, technical, and trust. Strong connection in all three is the key.
+
+The book also talks a little about how thoughts on diversity in the workplace began its shifting in the 90s. One of the best things you can do is speak up against discrimination. Toleration is endorsement. Many aren't explicitly biased, but we find "unbaised" ways to rationalize our subconscious prejudices, and if these are not called out, they will fester.
