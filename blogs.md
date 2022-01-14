@@ -4,6 +4,28 @@ layout: default
 use_math: true
 ---
 
+# Lexical Analysis Statistic Summary
+
+This is just a little cheat sheet for some stats from the paper Using Statistics in Lexical Analysis by Church, Gale, Hanks, and Hindle.
+
+## Mutual Information
+
+This is based on two events $x, y$ and is simply given by
+
+\[[I(x;y) = \log_2 \bigg( \frac{P(x,y)}{P(x) P(y)}\bigg)\]]
+
+So if $x,y$ are independent, this quantity is zero. However, it's difficult to get values that are very negative. The reason for this is that if x and y are fairly rare words (say one in ten thousand), then we would expect, by chance, to find the pair in every hundred million pairs. This is a rare event, and to confidently conclude the actual occurence is smaller still would require an extremely large corpus. This is a general problem of estimating rare events. 
+
+## t-tests
+
+If we want to say something like "powerful tea" is less common than "strong tea" using mutual information, we will run in to the problem of estimating a rare event's probability. A t-test allows us to get good results, however. Here is how the t-test works: We can try to estimate $P(z\|x)$ and $P(z\|y)$ by counting occurences $f(x,z)$ and $f(y,z)$ of the pairs and dividing by $f(x)$ and $f(y)$. The t-statistic
+
+\[[\frac{P(z\|x) - P(z\|y)}{\sqrt{\sigma^2[P(z\|x)] + \sigma^2[P(z\|y)]}}\]]
+
+is then a good way to attempt to reject a null hypothesis that the two quantities $P(z\|x)$ and $P(z\|y)$ are equal, in addition to giving a way to rank differences. As already mentioned, $P(z\|x)$ can be estimated by a ratio of counts. $\sigma^2[P(z\|x)]$ is the variance of this estimator, which is something like $\frac{p(1-p)}{n}$, where $p$ is the true probability and $n$ is the number of samples. For our purposes, we can approximate $1-p \approx 1$ and estimate it as $\frac{f(x,z)}{f(x)^2}$. 
+
+
+
 # The Satisfiability Threshold Conjecture
 
 I recently learned about this conjecture that still remains open, despite being a fairly basic observation. It's about random CNF SAT problems, so let's introduce that. CNF stands for *conjuctive normal form*, and is a restricted form of logical sentences. A sentence is in CNF is it of the form 
