@@ -4,6 +4,100 @@ layout: default
 use_math: true
 ---
 
+# Old Papers - Dropout
+
+(WIP)
+
+The title of this paper is **Dropout: A Simple Way to Prevent Neural Networks from Overfitting**, by Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, Ruslan Salakhutdinov
+
+Dropout should be an easy technique to reproduce with the old datasets, right? It's pretty straightforward to understand and the datasets were smaller back then. Right?
+
+WRONG.
+
+## MNIST
+
+Let's start with MNIST. The authors tested their dropout technique on a 2 to 4 layer net with 1024 to 8096 neurons per layer. My first test with no dropout was a net with 3 hidden layers and 1024 units per layer. I train on the MNIST training data and validate on the MNIST test data, sweeping through various combinations of learning rate, momentum, and batch size. Here is the result, letting the best 10 models run 20 epochs.
+
+![first nodropout sweep](/images/mnist_nodrop_1024x3_sweep.png)
+
+We get error rates between 1.5 and 2%, which is roughly what the paper claims. Also note that these are all converging - classification error is 0 and losses are on the order of 0.0001. Now, let's throw in dropout. In this case, 10 or 20 epochs is not long enough. I ran the best 10 for 40 epochs, and got this.
+
+![first dropout sweep](/images/mnist_drop_1024x3_sweep.png)
+
+That's not good! Do I need to train longer? Do I need to use the max-norm constraint they're talking about? What gives?
+
+(Interesting observation: my top ten models tended to have high momentum paired with low learning rates. This makes sense, since smaller steps paired with more momentum probably leads to a constant "speed" across the loss landscape. Probably one of these speeds is optimal for the data.)
+
+### MORE TRAINING
+Let's train one of the dropout models for much, much, much longer.
+Doesn't help!
+
+![long minst training with dropout](/images/mnist_dropout_1024x3_longtrain.png)
+
+### BIGGER NETS
+Let's try training a larger network. Since dropout is supposed to help deal with overfitting, we might see better results if we move up to a network that's large enough to overfit by a lot. I'll use a network with layers sizes 2048–2048–2048–2048 and see what happens. I did a quick hyperparameter search to find a reasonable configuration for the no dropout network, then ran the best one until convergence. That happens:
+
+```
+Epoch 9/99
+-----
+100%|██████████| 600/600 [01:17<00:00, 7.74it/s]
+train Loss: 0.0006
+train Error: 0.0000
+100%|██████████| 100/100 [00:04<00:00, 21.96it/s]
+val Loss: 0.0670
+val Error: 0.0173
+```
+
+And when I run the network with dropout with the same hyperparameters, FINALLY, I get these for the last few losses:
+```tensor(0.0143), tensor(0.0141), tensor(0.0152), tensor(0.0137), tensor(0.0147), tensor(0.0142), tensor(0.0141), tensor(0.0135), tensor(0.0136), tensor(0.0138), tensor(0.0140), tensor(0.0139), tensor(0.0143)```
+I count this as my first victory. The takeaway is probably that the network on which you're using dropout out needs to be sufficiently large. This might be because the "dropped out" networks will be too small to be good. It might also be because regularizing something that's not overfit doesn't help.
+
+## Google Street View 
+
+[Kaggle notebook](https://www.kaggle.com/zlindsey/street-view-houses-dropout-vs-no-dropout?scriptVersionId=85254927)
+
+This dataset is a collection of images of house numbers, presumably taken from a car moving past it. Each image has one house number that is centered, and the goal is to predict which digit it is. We're going to more or less copy the architecture described in the paper, as well as any hyperparameters we can find.
+
+> The convolutional layers have 96, 128 and 256 filters respectively. Each convolutional layer has a 5 × 5 receptive field applied with a stride of 1 pixel. Each max pooling layer pools 3 × 3 regions at strides of 2 pixels. The convolutional layers are followed by two fully connected hidden layers having 2048 units each. All units use the rectified linear activation function. Dropout was applied to all the layers of the network with the probability of retaining the unit being p = (0.9, 0.75, 0.75, 0.5, 0.5, 0.5) for the different layers of the network (going from input to convolutional layers to fully connected layers). In addition, the max-norm constraint with c = 4 was used for all the weights. A momentum of 0.95 was used in all the layers
+
+The data is also normalized to have mean 0, variance 1 along each RGB channel. 
+
+### no dropout
+For no dropout, we get the following train and val chart.
+
+![street view no dropout](/images/streetview_nodrop.png)
+
+```
+Epoch 48/49
+----------
+100%|██████████| 4579/4579 [00:37<00:00, 122.79it/s]
+train Loss: 0.0001
+train Error: 0.0000
+100%|██████████| 1627/1627 [00:05<00:00, 279.19it/s]
+val Loss: 0.6476
+val Error: 0.0583
+```
+
+### dropout
+
+For dropout...
+
+![street view dropout](/images/streetview_drop.png)
+
+```
+Epoch 49/49
+----------
+100%|██████████| 4579/4579 [00:45<00:00, 100.73it/s]
+train Loss: 0.1914
+train Error: 0.0572
+100%|██████████| 1627/1627 [00:07<00:00, 211.14it/s]
+val Loss: 0.2603
+val Error: 0.0626
+```
+
+*YIKES!* It's worse, again! What gives?
+
+
 # Lexical Analysis Statistic Summary
 
 This is just a little cheat sheet for some stats from the paper Using Statistics in Lexical Analysis by Church, Gale, Hanks, and Hindle.
