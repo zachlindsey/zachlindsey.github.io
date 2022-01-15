@@ -95,7 +95,22 @@ val Loss: 0.2603
 val Error: 0.0626
 ```
 
-*YIKES!* It's worse, again! What gives?
+*YIKES!* It's worse, again! What gives? The old solution to this problem was to make the net roughly twice the size, so let's try that...
+
+### BIG net, no dropout
+
+### Other tricks - lr decay
+The paper mentions starting with initial learning rates around 10 to 0.1, and decaying them by a multilicative factor each epoch. Starting from 10 or 1 seems to get the network "stuck" at a very high loss that never decreases in either the train OR test set.
+
+## Some other reading
+In googling around for trying to understand dropout a little better, I uncovered these papers that I might revisit one day.
+
+1. [Understanding Dropout](https://papers.nips.cc/paper/2013/file/71f6278d140af599e06ad9bf1ba03cb0-Paper.pdf)
+2. [Dropout Training as Adaptive Regularization](https://proceedings.neurips.cc/paper/2013/file/38db3aed920cf82ab059bfccbd02be6a-Paper.pdf)
+3. [Fast dropout training](https://nlp.stanford.edu/pubs/sidaw13fast.pdf)
+4. [Stochastic Gradient Descent as Approximate Bayesian Inference](https://arxiv.org/pdf/1704.04289.pdf)
+5. [Analysis of dropout learning regarded as ensemble learning](https://arxiv.org/pdf/1706.06859.pdf)
+6. [Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning](https://arxiv.org/pdf/1506.02142.pdf)
 
 
 # Lexical Analysis Statistic Summary
