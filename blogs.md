@@ -117,9 +117,24 @@ val Loss: 0.2447
 val Error: 0.0501
 ```
 
-![street view dropout lr decay](/images/streetview_drop_lrdecay)
+![street view dropout lr decay](/images/streetview_drop_lrdecay.png)
 
 The no dropout results:
+
+```
+Epoch 19/99
+----------
+100%|██████████| 4579/4579 [01:46<00:00, 42.82it/s]
+train Loss: 0.0002
+train Error: 0.0000
+100%|██████████| 1627/1627 [00:15<00:00, 102.59it/s]
+val Loss: 0.5244
+val Error: 0.0578
+```
+
+![street view no drop lr decay](/images/streeview_nodrop_lrdecay.png)
+
+
 
 (coming soon!)
 
