@@ -102,6 +102,28 @@ val Error: 0.0626
 ### Other tricks - lr decay
 The paper mentions starting with initial learning rates around 10 to 0.1, and decaying them by a multilicative factor each epoch. Starting from 10 or 1 seems to get the network "stuck" at a very high loss that never decreases in either the train OR test set.
 
+One setup that seems to work is starting with an LR of about 0.001 and decaying it to 0.00001 over 100 epochs. This network actually converges, even with dropout!
+
+The dropout results:
+
+```
+Epoch 99/99
+----------
+100%|██████████| 4579/4579 [01:35<00:00, 47.83it/s]
+train Loss: 0.0261
+train Error: 0.0085
+100%|██████████| 1627/1627 [00:11<00:00, 143.96it/s]
+val Loss: 0.2447
+val Error: 0.0501
+```
+
+![street view dropout lr decay](/images/streetview_drop_lrdecay)
+
+The no dropout results:
+
+(coming soon!)
+
+
 ## Some other reading
 In googling around for trying to understand dropout a little better, I uncovered these papers that I might revisit one day.
 
