@@ -5,8 +5,11 @@ use_math: true
 ---
 
 # TESTING TESTING TESTING
+(WIP)
 
 Just a list of testing best practices pulled from [here](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices) and shortened/summarized.
+
+<center><img src='/images/patrick_testing.png'></center>
 
 ## Good Names
 
@@ -40,8 +43,39 @@ class TestDogClass(unittest.TestCase):
 
 ## Lazy Tests
 
+A test should be mininmally passing. So don't non-default or non-zero values to models being constructed for the test. It's distracting and might lead to errors.
 
-## Magic Strings are BAD
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly():
+        
+        dog = Dog(breed = 'chihuahua', weight_in_lbs = 4.6) # BAD - why set these?
+
+        the_bark = dog.bark()
+
+        self.assertEquals(the_bark, "WOOF!!!!")
+```
+## Ambiguous Strings
+
+If a test includes a string that is somehow meaningful, but that meaning is not conveyed in the test or the name of the string, it leads to confusion and possible bugs.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_init():
+        self.assertException(Exception, Dog, name="Peyton") 
+        # BAD - what is the significance of this name?
+```
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_init_my_dog_is_reserved(): # BETTER - the name is more descriptive!
+
+        reserved_dog_name = "Peyton" 
+        # BETTER - now the name gives the reader some idea of what the string means
+
+        self.assertException(Exception, Dog, name=reserved_dog_name) 
+```
+
 
 ## Avoid Logic
 
