@@ -4,6 +4,57 @@ layout: default
 use_math: true
 ---
 
+# TESTING TESTING TESTING
+
+Just a list of testing best practices pulled from [here](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices) and shortened/summarized.
+
+## Good Names
+
+Give the tests descriptive names that indicate what is being tested, the context of the test, and the behavior. You should be writing good names for *everything*, so this should not be a surprising rule!
+
+## AAA
+
+These stand for Arrange, Act, Assert. Each of these steps should happen separately. For instance, this is bad.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly():
+        
+        dog = Dog()
+
+        self.assertEquals(dog.bark(), "WOOF!!!!")
+```
+
+Note that the *arrange* happens on one line, but the *act* and *assert* happens together. Don't do it!
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly():
+        
+        dog = Dog()
+
+        the_bark = dog.bark()
+
+        self.assertEquals(the_bark, "WOOF!!!!")
+```
+
+## Lazy Tests
+
+
+## Magic Strings are BAD
+
+## Avoid Logic
+
+## Setup and Teardown Bring Heartache
+
+## Lazy Tests, Take 2
+
+## Test Public Methods
+
+## Stub stub stub
+
+
+
 # Old Papers - Dropout
 
 (WIP)
