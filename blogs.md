@@ -148,9 +148,7 @@ This does two things for us. First, it makes the `arrange` step in the code clea
 
 
 
-# Old Papers - Dropout
-
-(WIP)
+# Old Papers Project - Dropout
 
 The title of this paper is **Dropout: A Simple Way to Prevent Neural Networks from Overfitting**, by Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, Ruslan Salakhutdinov
 
@@ -243,6 +241,8 @@ val Error: 0.0626
 
 ### BIG net, no dropout
 
+This also did not work...
+
 ### Other tricks - lr decay
 The paper mentions starting with initial learning rates around 10 to 0.1, and decaying them by a multilicative factor each epoch. Starting from 10 or 1 seems to get the network "stuck" at a very high loss that never decreases in either the train OR test set.
 
@@ -276,12 +276,60 @@ val Loss: 0.5244
 val Error: 0.0578
 ```
 
-![street view no drop lr decay](/images/streeview_nodrop_lrdecay.png)
+![street view no drop lr decay](/images/streetview_nodrop_lrdecay.png)
 
+Success!
 
+## Feature Sparsity
 
-(coming soon!)
+[Kaggle Notebook](https://www.kaggle.com/zlindsey/mnist-dropout-feature-examination)
 
+One last part of the paper that I succesfully reproduced concerned how dropout affects the sparsity of features. The idea is that without dropout, the weights of the different units can become codependent in odd ways, relying on each other for corrections. For instance, you can express `10` as `10 = 59 + 299 - 348`, and a neural network might learn to do just that if no regularization is put into place, even if it seems far more natural to just express `10 = 10 + 0 + 0`.
+
+So we set up two autoencoders. Each takes the `28 x 28` MNIST images as input, feeds this into a layer of 256 units, and then has a `28 x 28` output. Mean squared error is used on the original input to try to get the neural nets to learn to reconstruct the input. In one, we put a dropout of `p = 0.5` on the middle layer, and the other has no dropout.
+
+<center><img src='/images/weights_nodropout.png'><figcaption>Weights of autoencoder with no dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_nodropout.png'><figcaption>Example of input to of autoencoder with no dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_output_nodropout.png'><figcaption>Output for above inputs for autoencoder with no dropout.</figcaption></center>
+
+```
+Epoch 99/99
+----------
+100%|██████████| 15000/15000 [00:56<00:00, 264.10it/s]
+train Loss: 26.0594
+100%|██████████| 2500/2500 [00:06<00:00, 371.86it/s]
+val Loss: 25.9332
+```
+
+The reconstructions a pretty good! But look at the first image. These are the weights of each of the 256 internal units. That is, this is what each of the hidden units are "looking for" in the image in order to activate. Notice how they're all quite blurry and random looking, and it's not at all clear how a digit could be built from them.
+
+On the other hand, here are the same set of images for the network trained with dropout.
+
+<center><img src='/images/weights_dropout.png'><figcaption>Weights of autoencoder with 0.5 dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_dropout.png'><figcaption>Example of input to of autoencoder with 0.5 dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_output_dropout.png'><figcaption>Output for above inputs for autoencoder with no dropout.</figcaption></center>
+
+```
+Epoch 99/99
+----------
+100%|██████████| 15000/15000 [00:55<00:00, 268.41it/s]
+train Loss: 87.2140
+100%|██████████| 2500/2500 [00:06<00:00, 379.09it/s]
+val Loss: 64.3704
+```
+
+The reconstructions still look pretty good, even if the loss is much higher, but the real stunning difference here is what the weights look like! Notice that instead of random, noisy-looking blurs, each neuron has learned to focus on making a single stroke or dot! This is evidently because the output layer cannot so delicately reconstruct the result, so needs more straightforward hidden units to function.
+
+## Conclusion
+
+I would have like to check more results! The original paper investigated some text and audio datasets, too. It looks like, with some tinkering, dropout can help give a network that's overfitting an extra edge as well as regularize the weights. However, doing it is not a simple matter of throwing it in! The network with dropout requires care to find proper hyperparameters, lr decay, etc. Some things to remember...
+
++ Normalize the data! The feature sparsity notebook did not work until I realized that I needed to do this.
++ Use LR decay. Some networks get stuck after training at a certain LR for a period of time, and need the decrease to converge. I guess this is especially important for dropout, since extra noise is injected.
 
 ## Some other reading
 In googling around for trying to understand dropout a little better, I uncovered these papers that I might revisit one day.
