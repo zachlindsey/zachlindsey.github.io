@@ -21,7 +21,7 @@ These stand for Arrange, Act, Assert. Each of these steps should happen separate
 
 ```
 class TestDogClass(unittest.TestCase):
-    def test_dog_barks_loudly():
+    def test_dog_barks_loudly(self):
         
         dog = Dog()
 
@@ -32,7 +32,7 @@ Note that the *arrange* happens on one line, but the *act* and *assert* happens 
 
 ```
 class TestDogClass(unittest.TestCase):
-    def test_dog_barks_loudly():
+    def test_dog_barks_loudly(self):
         
         dog = Dog()
 
@@ -47,7 +47,7 @@ A test should be mininmally passing. So don't non-default or non-zero values to 
 
 ```
 class TestDogClass(unittest.TestCase):
-    def test_dog_barks_loudly():
+    def test_dog_barks_loudly(self):
         
         dog = Dog(breed = 'chihuahua', weight_in_lbs = 4.6) # BAD - why set these?
 
@@ -61,14 +61,14 @@ If a test includes a string that is somehow meaningful, but that meaning is not 
 
 ```
 class TestDogClass(unittest.TestCase):
-    def test_dog_init():
+    def test_dog_init(self):
         self.assertException(Exception, Dog, name="Peyton") 
         # BAD - what is the significance of this name?
 ```
 
 ```
 class TestDogClass(unittest.TestCase):
-    def test_dog_init_my_dog_is_reserved(): # BETTER - the name is more descriptive!
+    def test_dog_init_my_dog_is_reserved(self): # BETTER - the name is more descriptive!
 
         reserved_dog_name = "Peyton" 
         # BETTER - now the name gives the reader some idea of what the string means
@@ -79,7 +79,66 @@ class TestDogClass(unittest.TestCase):
 
 ## Avoid Logic
 
+Tests should be simple. Overly complicated logic in the tests is *not* simple, so if you find your test is full of `if`, `while`, `for`, and `switch` statements, perhaps it should be split into more tests.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_trick(self):
+        tricks = ['jump', 'shake', 'speak']
+        dog = Dog()
+        for trick in tricks:
+            result = dog.do_trick(trick);
+            self.assertEqual(result, true)
+```
+
+The above test makes multiple assertions and has a for loop. Why not just break each of those tricks into its own test?
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_gets_full(self):
+        for num_treats in range(20):
+            if num_treats < 5:
+                eats_the_treats = dog.eat_treats(num_treats)
+                self.assertEqual(eats_the_treats, true)
+            else:
+                eats_the_treats = dog.eat_treats(num_treats)
+                self.assertEqual(eats_the_treats, false)
+```
+
+This is an especially silly test! Why not just have the dog eat 4 treats and 5 treats in two separate tests? It does too much, and the logic is a code smell that clues you in to this fact.
+
 ## Setup and Teardown Bring Heartache
+Perhaps this is controversial, because I personally like using setup and teardown methods! In `unittest`, you can give one of your test classes a `setUp` method to run before each test.
+
+```
+class TestDogClass(unittest.TestCase):
+    def setUp(self):
+        self.dog = Dog()
+
+    def test_dog_barks(self):
+        the_bark = self.dog.speak()
+
+        self.assertEqual(the_bark, 'Woof!')
+```
+
+What's wrong with this? It keeps the code DRY, right? Well, yes! But keep in mind that it forces *all tests* to setup with the *same* code. What if a test needs a different set up? Your only option is to create another `TestCase` class! However, you could instead simply ignore the `setUp` functionality of your test suite in favor of constructors, like this:
+
+```
+class TestDogClass(unittest.TestCase):
+    def create_default_dog(self):
+        self.dog = Dog()
+
+
+    def test_dog_barks(self):
+        create_default_dog()
+
+        the_bark = self.dog.speak()
+
+        self.assertEqual(the_bark, 'Woof!')
+```
+
+This does two things for us. First, it makes the `arrange` step in the code clear. It also gives us more flexibility for `Dog` tests that do not use the default dog.
+
 
 ## Lazy Tests, Take 2
 
