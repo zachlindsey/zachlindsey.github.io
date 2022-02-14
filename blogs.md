@@ -4,6 +4,59 @@ layout: default
 use_math: true
 ---
 
+# Old Papers Project - Adam Optimizer
+
+Title: ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION
+Authors: Diederik P. Kingma, Jimmy Lei Ba
+
+The Adam optimizer is ubiquitous in ML, running the optimization for many projects. So let's dig into it a little bit! The main issue is whether or not boring stochastic gradient descent, 
+
+
+\[[\Theta_{t+1} = \Theta_t - \alpha \nabla f(\Theta_t) \]]
+
+can be improved upon. Here, $\Theta$ is the weights of a neural net (or any other parameters over which we're optimizing), $f$ is some loss function, and $\alpha$ is a step size.
+
+Some ideas that inspired the Adam optimizer:
+1. Keep track of "momentum". That is, instead of just stepping in the direction of the current gradient, also make use of past gradients in some way.
+2. Scale the step size for each update somehow. (AdaGrad)
+3. Scale the gradient to be roughly the same size for each minibatch. (RMSProp)
+
+We will see that Adam blends all three of these together. Here is the algorithm, written in pseudocode:
+
+```
+def adam(
+    f, // sequence of functions to optimize
+    alpha, // step size
+    beta1, // first moment decay
+    beta2, // second moment decay
+    theta, // some initial config,
+    eps // some small number
+    ):
+    m = 0 // first moment
+    v = 0 // second moment
+    t = 0 // timestep
+    converged = False
+    while not converged:
+        t += 1
+        grad = f.next().grad(theta)
+
+        m = beta1*m + (1-beta1)*grad // update first moment
+        v = beta2*v + (1-beta2)*grad**2 // update second moment
+        // note - **2 here is just pointwise
+
+        mhat = m/(1-beta1**t) // debias
+        vhat = v/(1-beta2**t) // debias
+
+        theta -= alpha * mhat / (sqrt(vhat) + eps)
+
+        converged = check_convergence()
+```
+## More Resources
+
+1. https://openreview.net/pdf?id=ryQu7f-RZ
+2. http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+3. https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf (adagrad - I think)
+
 # TESTING TESTING TESTING
 (WIP)
 
@@ -326,7 +379,7 @@ The reconstructions still look pretty good, even if the loss is much higher, but
 
 ## Conclusion
 
-I would have like to check more results! The original paper investigated some text and audio datasets, too. It looks like, with some tinkering, dropout can help give a network that's overfitting an extra edge as well as regularize the weights. However, doing it is not a simple matter of throwing it in! The network with dropout requires care to find proper hyperparameters, lr decay, etc. Some things to remember...
+I would have liked to check more results! The original paper investigated some text and audio datasets, too. It looks like, with some tinkering, dropout can help give a network that's overfitting an extra edge as well as regularize the weights. However, doing it is not a simple matter of throwing it in! The network with dropout requires care to find proper hyperparameters, lr decay, etc. Some things to remember...
 
 + Normalize the data! The feature sparsity notebook did not work until I realized that I needed to do this.
 + Use LR decay. Some networks get stuck after training at a certain LR for a period of time, and need the decrease to converge. I guess this is especially important for dropout, since extra noise is injected.
