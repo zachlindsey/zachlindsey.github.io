@@ -5,6 +5,7 @@ use_math: true
 ---
 
 # Old Papers Project - Adam Optimizer
+(WIP)
 
 Title: ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION
 Authors: Diederik P. Kingma, Jimmy Lei Ba
@@ -51,6 +52,110 @@ def adam(
 
         converged = check_convergence()
 ```
+
+## Logistic Regression
+
+The first task the paper discusses is logistic regression on the MINST dataset. So something really simple like 
+```
+class MNistLogReg(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer = nn.Linear(28*28, 10)
+        
+    def forward(self, X):
+        X = torch.flatten(X,start_dim=1)
+        X = self.layer(X)
+        return X
+```
+seems to be what they have in mind, with the cross entropy loss. For evaluation, they compare their Adam optimizer with SGD and Adagrad. Thankfully for me, all of these are implemented in Pytorch! Unsurprisingly, the paper does not give me any details about hyperparameters other than "they were obtained by a dense grid search". Hmmm, ok.
+
+That sounded tedious and not fun, so I decided to try and use Optuna to do the hyperparameter search. 
+
+```
+import optuna
+
+def objective(trial):
+    lr = trial.suggest_float('lr',0,1)
+#     lr_decay = trial.suggest_float('lr_decay', 0,1)
+    beta1 = trial.suggest_float('beta1', 0, 1)
+    beta2 = trial.suggest_float('beta2', 0, 1)
+#     momentum = trial.suggest_float('momentum', 0, 1)
+#     weight_decay = trial.suggest_float('weight_decay', 0,1)
+    l2_reg = trial.suggest_float('l2', 0, 1)
+    
+    lr = math.exp(-1/fancy_lr)
+    
+    model =  MNistLogReg()
+    optimizer = optim.Adam(model.parameters(), lr=lr, betas=(beta1,beta2), weight_decay = l2_reg)
+#     optimizer = optim.SGD(model.parameters(), lr = lr, momentum = momentum, weight_decay = weight_decay, nesterov = True)
+#     optimizer = optim.Adagrad(model.parameters(), lr=lr, lr_decay=lr_decay, weight_decay=weight_decay)
+    
+    val_errors = train_MNIST_logreg(model, optimizer, criterion, verbose = False)
+    return min(val_errors)
+
+study = optuna.create_study()
+study.optimize(objective, n_trials=100)
+```
+
+All was well until it was time to compare them. First off, it seems the losses all turned out *way* too high and the paper's findings were definitely not held up! The loss of the best optimizer, Adagrad, looked like 
+
+```
+Epoch 12/99
+----------
+100%|██████████| 7500/7500 [00:20<00:00, 365.07it/s]
+train Loss: 23.9768
+train Error: 0.0895
+100%|██████████| 1250/1250 [00:03<00:00, 376.82it/s]
+val Loss: 28.5779
+val Error: 0.0984
+```
+
+Assuming the paper's "training cost" is the log-loss, this means that this model is not doing well! Here were the percentage errors on the validation dataset for each model.
+
+<center>
+    <img src='/images/optimizer_duel_MNIST.png'>
+    <figcaption>blue - adam; orange - sgd; green - adagrad</figcaption>
+</center>
+
+Adam did the worst! What gives? Two possibilities:
+1. The optuna hyperparameter ranges are not close to optimal. If the best lr is 1e-4, my sampling method will probably not find it.
+2. The paper mentions scaling learning rates by a `sqrt(t)` term. I ignored this, but perhaps it is the secret sauce for Adam.
+
+## Fun Fact
+
+So the paper has a "proof" of convergence. If you carefully check out this proof, it doesn't take too long to find some fishy statements. For instance, check out this lemma:
+
+<center>
+    <img src = '/images/adam_lemma_10_3.png'>
+</center>
+
+The `g_{1:t}` term is just the vector defined by `g_{1:t}[i] = g_t[i]`. I think this lemma is *usually* true, but it's not hard to find sequences of `g` that violate it. For example, try this:
+
+```
+import math
+
+
+Ginf = 0
+LHS = 0
+square_sum = 0
+
+T = 2
+for t in range(1,T+1):
+    gt = 0.1
+    LHS += math.sqrt(gt**2/t)
+    square_sum += gt**2
+    Ginf = max(Ginf, abs(gt))
+RHS = 2*Ginf*math.sqrt(square_sum)
+
+print('LHS=',LHS)
+print('RHS=',RHS)
+
+LHS= 0.17071067811865476
+RHS= 0.02828427124746191
+```
+
+Hmm...
+
 ## More Resources
 
 1. https://openreview.net/pdf?id=ryQu7f-RZ
