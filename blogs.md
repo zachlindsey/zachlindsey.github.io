@@ -121,6 +121,17 @@ Adam did the worst! What gives? Two possibilities:
 1. The optuna hyperparameter ranges are not close to optimal. If the best lr is 1e-4, my sampling method will probably not find it.
 2. The paper mentions scaling learning rates by a `sqrt(t)` term. I ignored this, but perhaps it is the secret sauce for Adam.
 
+## Ha ha, I am an idiot
+
+So the real answer is a little bit of (1) above, but mostly... *I forgot to normalize the data*. After fixing this issue and using the nifty `log=True` flag in Optuna's `suggest_float` for the learning rate, I was able to obtain log losses in the range reported by the paper. However, that did not change the fact that I wasn't really able to reproduce the superiority of Adam over SGD and Adagrad. Here are the new and improved classification errors for the validation set:
+
+<center>
+    <img src='/images/optimizer_duel_MNIST2.png'>
+    <figcaption>blue - adam; orange - sgd; green - adagrad</figcaption>
+</center>
+
+So Adam does seem to have an edge on Adagrad here, but both lose out to plain old SGD! Maybe Optuna's randomness gave SGD a lucky break.
+
 ## Fun Fact
 
 So the paper has a "proof" of convergence. If you carefully check out this proof, it doesn't take too long to find some fishy statements. For instance, check out this lemma:
@@ -155,6 +166,7 @@ RHS= 0.02828427124746191
 ```
 
 Hmm...
+
 
 ## More Resources
 
