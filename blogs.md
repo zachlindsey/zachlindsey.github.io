@@ -16,11 +16,11 @@ Anyway, this paper introduces the ResNet architecture. The "Res" stands for "res
 
 Recall in deep vision nets, each layer is trying to learn some function 
 
-\[\mathcal{F}(X; W,b) = \sigma(WX + b)\]
+\[[\mathcal{F}(X; W,b) = \sigma(WX + b)\]]
 
 Note that if we set $W = I$ to be the identity matrix and $b = 0$, this function is the identity map before the activation. Furthermore, if we have two of these functions and the second has $W=I, b=0$, then
 
-\[\mathcal{F}(\mathcal{F}(X;W,b);I,0) = \mathcal{F}(X;W,b)\]
+\[[\mathcal{F}(\mathcal{F}(X;W,b);I,0) = \mathcal{F}(X;W,b)\]]
 
 so that the second layer does nothing to the output. So how can it be that a deeper network can reproduce the output of the shallower network, but does not?
 
