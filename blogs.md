@@ -4,6 +4,35 @@ layout: default
 use_math: true
 ---
 
+# Old Papers Project - ResNet
+
+Title: Deep Residual Learning for Image Recognition
+Authors: Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
+(WIP)
+
+This month has been busy, so I don't have a big pile of experiments to talk about! This is partially because this paper's dataset is pretty beefy compared to the other ones talked about so far, since it's 155G compressed! So to chew on it, I decided to get some disks and compute instances on Google Cloud spun up. That all takes time!
+
+Anyway, this paper introduces the ResNet architecture. The "Res" stands for "residual", which is the main idea put forward in the paper. The authors noted that very deep nets start to perform *worse* than shallower versions. They suspect that is is not because of vanishing gradient issues, since batch normalization should fix it. Instead, their architecture attacks the representation learned by the nets from layer to layer.
+
+Recall in deep vision nets, each layer is trying to learn some function 
+
+\[\mathcal{F}(X; W,b) = \sigma(WX + b)\]
+
+Note that if we set $W = I$ to be the identity matrix and $b = 0$, this function is the identity map before the activation. Furthermore, if we have two of these functions and the second has $W=I, b=0$, then
+
+\[\mathcal{F}(\mathcal{F}(X;W,b);I,0) = \mathcal{F}(X;W,b)\]
+
+so that the second layer does nothing to the output. So how can it be that a deeper network can reproduce the output of the shallower network, but does not?
+
+A place to start looking is to remember how the networks start the process. Typically the components of $W$ are normally distributed around 0 and $b = 0$ at the start, so the layers $\mathcal{F}$ of the network start quite far from the "do nothing" setting. 
+
+The solution this paper introduces is to introduce skip connections. For instance, if $L_1, L_2$ are two layers of the network, instead of passing $L_2(L_1(X))$ into the next layer in the network, we pass $X + L_2(L_1(X))$. This means 
+
+1. The network is only learning the "residual" between the input X and the output, hence the name of the architecture.
+2. Since $L_1, L_2$ will start out close to the zero map, $X + L_2(L_1(X))$ will start near the identity, giving the deeper network a better starting point.
+
+
+
 # Old Papers Project - Adam Optimizer
 (WIP)
 
