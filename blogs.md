@@ -4,6 +4,10 @@ layout: default
 use_math: true
 ---
 
+# The Book of Why - Part 1
+
+I wrote up some sample code that illustrates some ideas I picked up from Judea Pearl's *Book of Why*. I think the best way to share it for now is just drop a link to the Google Colab notebook, so here it is: [link](https://colab.research.google.com/drive/1Hk0nNqlmhHohD-JwUlL9cKsI6KAFtFh2?usp=sharing)
+
 # Old Papers - Dropout
 
 (WIP)
