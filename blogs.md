@@ -4,13 +4,355 @@ layout: default
 use_math: true
 ---
 
+
 # The Book of Why - Part 1
 
 I wrote up some sample code that illustrates some ideas I picked up from Judea Pearl's *Book of Why*. I think the best way to share it for now is just drop a link to the Google Colab notebook, so here it is: [link](https://colab.research.google.com/drive/1Hk0nNqlmhHohD-JwUlL9cKsI6KAFtFh2?usp=sharing)
 
-# Old Papers - Dropout
 
+# Old Papers Project - ResNet
+Title: Deep Residual Learning for Image Recognition
+Authors: Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
 (WIP)
+
+This month has been busy, so I don't have a big pile of experiments to talk about! This is partially because this paper's dataset is pretty beefy compared to the other ones talked about so far, since it's 155G compressed! So to chew on it, I decided to get some disks and compute instances on Google Cloud spun up. That all takes time!
+
+Anyway, this paper introduces the ResNet architecture. The "Res" stands for "residual", which is the main idea put forward in the paper. The authors noted that very deep nets start to perform *worse* than shallower versions. They suspect that is is not because of vanishing gradient issues, since batch normalization should fix it. Instead, their architecture attacks the representation learned by the nets from layer to layer.
+
+Recall in deep vision nets, each layer is trying to learn some function 
+
+\[[\mathcal{F}(X; W,b) = \sigma(WX + b)\]]
+
+Note that if we set $W = I$ to be the identity matrix and $b = 0$, this function is the identity map before the activation. Furthermore, if we have two of these functions and the second has $W=I, b=0$, then
+
+\[[\mathcal{F}(\mathcal{F}(X;W,b);I,0) = \mathcal{F}(X;W,b)\]]
+
+so that the second layer does nothing to the output. So how can it be that a deeper network can reproduce the output of the shallower network, but does not?
+
+A place to start looking is to remember how the networks start the process. Typically the components of $W$ are normally distributed around 0 and $b = 0$ at the start, so the layers $\mathcal{F}$ of the network start quite far from the "do nothing" setting. 
+
+The solution this paper introduces is to introduce skip connections. For instance, if $L_1, L_2$ are two layers of the network, instead of passing $L_2(L_1(X))$ into the next layer in the network, we pass $X + L_2(L_1(X))$. This means 
+
+1. The network is only learning the "residual" between the input X and the output, hence the name of the architecture.
+2. Since $L_1, L_2$ will start out close to the zero map, $X + L_2(L_1(X))$ will start near the identity, giving the deeper network a better starting point.
+
+
+
+# Old Papers Project - Adam Optimizer
+(WIP)
+
+Title: ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION
+Authors: Diederik P. Kingma, Jimmy Lei Ba
+
+The Adam optimizer is ubiquitous in ML, running the optimization for many projects. So let's dig into it a little bit! The main issue is whether or not boring stochastic gradient descent, 
+
+
+\[[\Theta_{t+1} = \Theta_t - \alpha \nabla f(\Theta_t) \]]
+
+can be improved upon. Here, $\Theta$ is the weights of a neural net (or any other parameters over which we're optimizing), $f$ is some loss function, and $\alpha$ is a step size.
+
+Some ideas that inspired the Adam optimizer:
+1. Keep track of "momentum". That is, instead of just stepping in the direction of the current gradient, also make use of past gradients in some way.
+2. Scale the step size for each update somehow. (AdaGrad)
+3. Scale the gradient to be roughly the same size for each minibatch. (RMSProp)
+
+We will see that Adam blends all three of these together. Here is the algorithm, written in pseudocode:
+
+```
+def adam(
+    f, // sequence of functions to optimize
+    alpha, // step size
+    beta1, // first moment decay
+    beta2, // second moment decay
+    theta, // some initial config,
+    eps // some small number
+    ):
+    m = 0 // first moment
+    v = 0 // second moment
+    t = 0 // timestep
+    converged = False
+    while not converged:
+        t += 1
+        grad = f.next().grad(theta)
+
+        m = beta1*m + (1-beta1)*grad // update first moment
+        v = beta2*v + (1-beta2)*grad**2 // update second moment
+        // note - **2 here is just pointwise
+
+        mhat = m/(1-beta1**t) // debias
+        vhat = v/(1-beta2**t) // debias
+
+        theta -= alpha * mhat / (sqrt(vhat) + eps)
+
+        converged = check_convergence()
+```
+
+## Logistic Regression
+
+The first task the paper discusses is logistic regression on the MINST dataset. So something really simple like 
+```
+class MNistLogReg(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer = nn.Linear(28*28, 10)
+        
+    def forward(self, X):
+        X = torch.flatten(X,start_dim=1)
+        X = self.layer(X)
+        return X
+```
+seems to be what they have in mind, with the cross entropy loss. For evaluation, they compare their Adam optimizer with SGD and Adagrad. Thankfully for me, all of these are implemented in Pytorch! Unsurprisingly, the paper does not give me any details about hyperparameters other than "they were obtained by a dense grid search". Hmmm, ok.
+
+That sounded tedious and not fun, so I decided to try and use Optuna to do the hyperparameter search. 
+
+```
+import optuna
+
+def objective(trial):
+    lr = trial.suggest_float('lr',0,1)
+#     lr_decay = trial.suggest_float('lr_decay', 0,1)
+    beta1 = trial.suggest_float('beta1', 0, 1)
+    beta2 = trial.suggest_float('beta2', 0, 1)
+#     momentum = trial.suggest_float('momentum', 0, 1)
+#     weight_decay = trial.suggest_float('weight_decay', 0,1)
+    l2_reg = trial.suggest_float('l2', 0, 1)
+    
+    lr = math.exp(-1/fancy_lr)
+    
+    model =  MNistLogReg()
+    optimizer = optim.Adam(model.parameters(), lr=lr, betas=(beta1,beta2), weight_decay = l2_reg)
+#     optimizer = optim.SGD(model.parameters(), lr = lr, momentum = momentum, weight_decay = weight_decay, nesterov = True)
+#     optimizer = optim.Adagrad(model.parameters(), lr=lr, lr_decay=lr_decay, weight_decay=weight_decay)
+    
+    val_errors = train_MNIST_logreg(model, optimizer, criterion, verbose = False)
+    return min(val_errors)
+
+study = optuna.create_study()
+study.optimize(objective, n_trials=100)
+```
+
+All was well until it was time to compare them. First off, it seems the losses all turned out *way* too high and the paper's findings were definitely not held up! The loss of the best optimizer, Adagrad, looked like 
+
+```
+Epoch 12/99
+----------
+100%|██████████| 7500/7500 [00:20<00:00, 365.07it/s]
+train Loss: 23.9768
+train Error: 0.0895
+100%|██████████| 1250/1250 [00:03<00:00, 376.82it/s]
+val Loss: 28.5779
+val Error: 0.0984
+```
+
+Assuming the paper's "training cost" is the log-loss, this means that this model is not doing well! Here were the percentage errors on the validation dataset for each model.
+
+<center>
+    <img src='/images/optimizer_duel_MNIST.png'>
+    <figcaption>blue - adam; orange - sgd; green - adagrad</figcaption>
+</center>
+
+Adam did the worst! What gives? Two possibilities:
+1. The optuna hyperparameter ranges are not close to optimal. If the best lr is 1e-4, my sampling method will probably not find it.
+2. The paper mentions scaling learning rates by a `sqrt(t)` term. I ignored this, but perhaps it is the secret sauce for Adam.
+
+## Ha ha, I am an idiot
+
+So the real answer is a little bit of (1) above, but mostly... *I forgot to normalize the data*. After fixing this issue and using the nifty `log=True` flag in Optuna's `suggest_float` for the learning rate, I was able to obtain log losses in the range reported by the paper. However, that did not change the fact that I wasn't really able to reproduce the superiority of Adam over SGD and Adagrad. Here are the new and improved classification errors for the validation set:
+
+<center>
+    <img src='/images/optimizer_duel_MNIST2.png'>
+    <figcaption>blue - adam; orange - sgd; green - adagrad</figcaption>
+</center>
+
+So Adam does seem to have an edge on Adagrad here, but both lose out to plain old SGD! Maybe Optuna's randomness gave SGD a lucky break.
+
+## Fun Fact
+
+So the paper has a "proof" of convergence. If you carefully check out this proof, it doesn't take too long to find some fishy statements. For instance, check out this lemma:
+
+<center>
+    <img src = '/images/adam_lemma_10_3.png'>
+</center>
+
+The `g_{1:t}` term is just the vector defined by `g_{1:t}[i] = g_t[i]`. I think this lemma is *usually* true, but it's not hard to find sequences of `g` that violate it. For example, try this:
+
+```
+import math
+
+
+Ginf = 0
+LHS = 0
+square_sum = 0
+
+T = 2
+for t in range(1,T+1):
+    gt = 0.1
+    LHS += math.sqrt(gt**2/t)
+    square_sum += gt**2
+    Ginf = max(Ginf, abs(gt))
+RHS = 2*Ginf*math.sqrt(square_sum)
+
+print('LHS=',LHS)
+print('RHS=',RHS)
+
+LHS= 0.17071067811865476
+RHS= 0.02828427124746191
+```
+
+Hmm...
+
+
+## More Resources
+
+1. https://openreview.net/pdf?id=ryQu7f-RZ
+2. http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+3. https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf (adagrad - I think)
+
+# TESTING TESTING TESTING
+(WIP)
+
+Just a list of testing best practices pulled from [here](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices) and shortened/summarized.
+
+<center><img src='/images/patrick_testing.png'></center>
+
+## Good Names
+
+Give the tests descriptive names that indicate what is being tested, the context of the test, and the behavior. You should be writing good names for *everything*, so this should not be a surprising rule!
+
+## AAA
+
+These stand for Arrange, Act, Assert. Each of these steps should happen separately. For instance, this is bad.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly(self):
+        
+        dog = Dog()
+
+        self.assertEquals(dog.bark(), "WOOF!!!!")
+```
+
+Note that the *arrange* happens on one line, but the *act* and *assert* happens together. Don't do it!
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly(self):
+        
+        dog = Dog()
+
+        the_bark = dog.bark()
+
+        self.assertEquals(the_bark, "WOOF!!!!")
+```
+
+## Lazy Tests
+
+A test should be mininmally passing. So don't non-default or non-zero values to models being constructed for the test. It's distracting and might lead to errors.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_barks_loudly(self):
+        
+        dog = Dog(breed = 'chihuahua', weight_in_lbs = 4.6) # BAD - why set these?
+
+        the_bark = dog.bark()
+
+        self.assertEquals(the_bark, "WOOF!!!!")
+```
+## Ambiguous Strings
+
+If a test includes a string that is somehow meaningful, but that meaning is not conveyed in the test or the name of the string, it leads to confusion and possible bugs.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_init(self):
+        self.assertException(Exception, Dog, name="Peyton") 
+        # BAD - what is the significance of this name?
+```
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_init_my_dog_is_reserved(self): # BETTER - the name is more descriptive!
+
+        reserved_dog_name = "Peyton" 
+        # BETTER - now the name gives the reader some idea of what the string means
+
+        self.assertException(Exception, Dog, name=reserved_dog_name) 
+```
+
+
+## Avoid Logic
+
+Tests should be simple. Overly complicated logic in the tests is *not* simple, so if you find your test is full of `if`, `while`, `for`, and `switch` statements, perhaps it should be split into more tests.
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_trick(self):
+        tricks = ['jump', 'shake', 'speak']
+        dog = Dog()
+        for trick in tricks:
+            result = dog.do_trick(trick);
+            self.assertEqual(result, true)
+```
+
+The above test makes multiple assertions and has a for loop. Why not just break each of those tricks into its own test?
+
+```
+class TestDogClass(unittest.TestCase):
+    def test_dog_gets_full(self):
+        for num_treats in range(20):
+            if num_treats < 5:
+                eats_the_treats = dog.eat_treats(num_treats)
+                self.assertEqual(eats_the_treats, true)
+            else:
+                eats_the_treats = dog.eat_treats(num_treats)
+                self.assertEqual(eats_the_treats, false)
+```
+
+This is an especially silly test! Why not just have the dog eat 4 treats and 5 treats in two separate tests? It does too much, and the logic is a code smell that clues you in to this fact.
+
+## Setup and Teardown Bring Heartache
+Perhaps this is controversial, because I personally like using setup and teardown methods! In `unittest`, you can give one of your test classes a `setUp` method to run before each test.
+
+```
+class TestDogClass(unittest.TestCase):
+    def setUp(self):
+        self.dog = Dog()
+
+    def test_dog_barks(self):
+        the_bark = self.dog.speak()
+
+        self.assertEqual(the_bark, 'Woof!')
+```
+
+What's wrong with this? It keeps the code DRY, right? Well, yes! But keep in mind that it forces *all tests* to setup with the *same* code. What if a test needs a different set up? Your only option is to create another `TestCase` class! However, you could instead simply ignore the `setUp` functionality of your test suite in favor of constructors, like this:
+
+```
+class TestDogClass(unittest.TestCase):
+    def create_default_dog(self):
+        self.dog = Dog()
+
+
+    def test_dog_barks(self):
+        create_default_dog()
+
+        the_bark = self.dog.speak()
+
+        self.assertEqual(the_bark, 'Woof!')
+```
+
+This does two things for us. First, it makes the `arrange` step in the code clear. It also gives us more flexibility for `Dog` tests that do not use the default dog.
+
+
+## Lazy Tests, Take 2
+
+## Test Public Methods
+
+## Stub stub stub
+
+
+
+# Old Papers Project - Dropout
 
 The title of this paper is **Dropout: A Simple Way to Prevent Neural Networks from Overfitting**, by Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, Ruslan Salakhutdinov
 
@@ -103,6 +445,8 @@ val Error: 0.0626
 
 ### BIG net, no dropout
 
+This also did not work...
+
 ### Other tricks - lr decay
 The paper mentions starting with initial learning rates around 10 to 0.1, and decaying them by a multilicative factor each epoch. Starting from 10 or 1 seems to get the network "stuck" at a very high loss that never decreases in either the train OR test set.
 
@@ -136,12 +480,60 @@ val Loss: 0.5244
 val Error: 0.0578
 ```
 
-![street view no drop lr decay](/images/streeview_nodrop_lrdecay.png)
+![street view no drop lr decay](/images/streetview_nodrop_lrdecay.png)
 
+Success!
 
+## Feature Sparsity
 
-(coming soon!)
+[Kaggle Notebook](https://www.kaggle.com/zlindsey/mnist-dropout-feature-examination)
 
+One last part of the paper that I succesfully reproduced concerned how dropout affects the sparsity of features. The idea is that without dropout, the weights of the different units can become codependent in odd ways, relying on each other for corrections. For instance, you can express `10` as `10 = 59 + 299 - 348`, and a neural network might learn to do just that if no regularization is put into place, even if it seems far more natural to just express `10 = 10 + 0 + 0`.
+
+So we set up two autoencoders. Each takes the `28 x 28` MNIST images as input, feeds this into a layer of 256 units, and then has a `28 x 28` output. Mean squared error is used on the original input to try to get the neural nets to learn to reconstruct the input. In one, we put a dropout of `p = 0.5` on the middle layer, and the other has no dropout.
+
+<center><img src='/images/weights_nodropout.png'><figcaption>Weights of autoencoder with no dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_nodropout.png'><figcaption>Example of input to of autoencoder with no dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_output_nodropout.png'><figcaption>Output for above inputs for autoencoder with no dropout.</figcaption></center>
+
+```
+Epoch 99/99
+----------
+100%|██████████| 15000/15000 [00:56<00:00, 264.10it/s]
+train Loss: 26.0594
+100%|██████████| 2500/2500 [00:06<00:00, 371.86it/s]
+val Loss: 25.9332
+```
+
+The reconstructions a pretty good! But look at the first image. These are the weights of each of the 256 internal units. That is, this is what each of the hidden units are "looking for" in the image in order to activate. Notice how they're all quite blurry and random looking, and it's not at all clear how a digit could be built from them.
+
+On the other hand, here are the same set of images for the network trained with dropout.
+
+<center><img src='/images/weights_dropout.png'><figcaption>Weights of autoencoder with 0.5 dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_dropout.png'><figcaption>Example of input to of autoencoder with 0.5 dropout.</figcaption></center>
+
+<center><img src='/images/reconstruction_output_dropout.png'><figcaption>Output for above inputs for autoencoder with no dropout.</figcaption></center>
+
+```
+Epoch 99/99
+----------
+100%|██████████| 15000/15000 [00:55<00:00, 268.41it/s]
+train Loss: 87.2140
+100%|██████████| 2500/2500 [00:06<00:00, 379.09it/s]
+val Loss: 64.3704
+```
+
+The reconstructions still look pretty good, even if the loss is much higher, but the real stunning difference here is what the weights look like! Notice that instead of random, noisy-looking blurs, each neuron has learned to focus on making a single stroke or dot! This is evidently because the output layer cannot so delicately reconstruct the result, so needs more straightforward hidden units to function.
+
+## Conclusion
+
+I would have liked to check more results! The original paper investigated some text and audio datasets, too. It looks like, with some tinkering, dropout can help give a network that's overfitting an extra edge as well as regularize the weights. However, doing it is not a simple matter of throwing it in! The network with dropout requires care to find proper hyperparameters, lr decay, etc. Some things to remember...
+
++ Normalize the data! The feature sparsity notebook did not work until I realized that I needed to do this.
++ Use LR decay. Some networks get stuck after training at a certain LR for a period of time, and need the decrease to converge. I guess this is especially important for dropout, since extra noise is injected.
 
 ## Some other reading
 In googling around for trying to understand dropout a little better, I uncovered these papers that I might revisit one day.
