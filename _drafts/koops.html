@@ -7,6 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });">
+</script>
+  
   <style>
     /* ─── tokens ──────────────────────────────────────────── */
     :root {
@@ -283,63 +295,33 @@
       </ul>
     </nav>
 
-    <!-- ── HOME ───────────────────────────────────────────── -->
-    <div class="page active" id="home">
-      <div class="home-eyebrow">Chicago, IL</div>
-      <h1 class="home-name">Zach</h1>
-      <p class="home-sub">
-        Math PhD. Research data analyst in a neurology lab.
-        I write about things I'm figuring out.
-      </p>
-      <div class="divider"></div>
-      <div class="now-label">now</div>
-      <div class="now-list">
-        <p><span>Reading</span> - ...</p>
-        <p><span>Building</span> - ...</p>
-        <p><span>Thinking about</span> - ...</p>
-      </div>
-    </div>
 
-    <!-- ── PROJECTS ───────────────────────────────────────── -->
-    <div class="page" id="projects">
-      <div class="section-label">Projects</div>
-      <div class="proj-list"></div>
+<p>A quick crash course in Fourier analysis: Suppose $f$ is a "nice" function, so that this exists:
 
-    </div>
+  $$\hat{f}(\omega) = \int_t f(t) e^{-it\omega} dt$$
 
-    <!-- ── WRITING ────────────────────────────────────────── -->
-    <div class="page" id="writing">
-      <div class="section-label">Writing</div>
-      <div class="post-list">
+for all $\omega$. Then $\hat{f}$ is the Fourier transform of $f$, and if $f$ is especially nice then $$f(x) = \int_\omega \hat{f}(\omega) e^{it\omega} d\omega.$$ So we have this way to go back and forth $$f \Leftrightarrow \hat{f}.$$ A nice example: if $f(t) = 1_{[-1,1]}$ is a rectangle function, then $$\hat{f}(\omega) = \int_{-1}^1 e^{-it\omega}dt = \frac{i}{\omega} \bigg(e^{-i\omega} - e^{i\omega}\bigg) = \frac{2\sin(\omega)}{\omega}$$ is the <em>sinc</em> function. And we can compute the inverse: $$ \int_\omega \frac{2\sin(\omega)}{\omega} e^{i\omega t}d\omega = \int_\omega  \frac{2\sin(\omega)}{\omega} \bigg( \cos(\omega t) + i \sin(\omega t) \bigg)$$</p>
 
-        
 
-      </div>
-    </div>
+<p>Suppose $x(t) = \sum_k c_k e^{i\lambda_k t}$ is a periodic time series we're interested in. (In particular, the sum is over a finite set of $n$.) One way we could try to figure out properties about it is to take the <em>autocorrelation</em> $$C(\tau) = \lim_{T \rightarrow \infty} \frac{1}{2T} \int_{-T}^T \overline{x(t)} x(\tau + t) dt.$$ We can calculate
 
-    <!-- ── ABOUT ──────────────────────────────────────────── -->
-    <div class="page" id="about">
-      <div class="section-label">About</div>
-      <div class="about-body">
-        <p>
-          I'm a research data analyst at a university neurology lab in Chicago,
-          working on <em>neuroimaging pipelines, QC infrastructure, and multimodal data</em>.
-          My PhD was in mathematics — category theory specifically — which means I have
-          strong opinions about abstraction and a healthy skepticism toward things that
-          look clean on paper.
-        </p>
-      </div>
-    </div>
+$$
+\begin{align*}
+& \int_{-T}^T \overline{x(t)} x(\tau + t) dt \\
+= & \sum_n \sum_m \overline{c_n} c_m \int_{-T}^T e^{it(\lambda_m - \lambda_n) + i\lambda_m \tau} dt \\
+= & \sum_n \sum_m \overline{c_n} c_m e^{i\lambda_m \tau} \int_{-T}^T e^{it(\lambda_m - \lambda_n)}dt \\
+= &  2T \sum_n |c_n|^2 e^{i\lambda_n \tau} + \sum_{n \neq m} \overline{c_n} c_m \frac{2\sin(T(\lambda_m - \lambda_n))}{\lambda_m - \lambda_n} \\
+\end{align*}
+$$
+
+Now we see why we must divide by $2T$ and take the limit, which gives
+
+$$C(\tau) = \sum_n |c_n|^2 e^{i\lambda_n \tau}.$$ Why do this? We seemingly just took something with frequencies $\lambda_k$ and made a new thing with the same frequencies! The point is that $C(-\tau) = C(\tau)$ or equivalent, the coefficients in its Fourier representation are real! So we have taken the complex numbers $c_k \in \mathbb{C}$ and converted them to reals $|c_k|^2 \in \mathbb{R}$. This is equivalent to tossing out the <em>phase information</em> and retaining only <em>power information</em>.</p>
+
+
 
   </div><!-- /site-wrap -->
 
-  <script>
-    function show(id, el) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      el.classList.add('active');
-    }
-  </script>
+
 </body>
 </html>
