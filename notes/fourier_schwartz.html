@@ -7,6 +7,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet" />
+
+  <!-- post template: posts/post.html -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  fetch('fourier_schwartz.md')
+    .then(r => r.text())
+    .then(md => document.getElementById('content').innerHTML = marked.parse(md))
+    .then(() => renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  }))
+</script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js">
+</script>
   <style>
     /* ─── tokens ──────────────────────────────────────────── */
     :root {
@@ -269,6 +288,16 @@
       .nav-links { gap: 16px; }
       .post-item { grid-template-columns: 56px 1fr; gap: 12px; }
     }
+
+    /* ─── post body ───────────────────────────────────────── */
+  #content p {
+    margin-bottom: 1.4em;
+    margin-top: 1em;
+    max-width: 600px;
+  }
+
+
+
   </style>
 </head>
 <body>
@@ -283,52 +312,8 @@
       </ul>
     </nav>
 
-    <!-- ── HOME ───────────────────────────────────────────── -->
-    <div class="page active" id="home">
-      <div class="home-eyebrow">Chicago, IL</div>
-      <h1 class="home-name">Zach</h1>
-      <p class="home-sub">
-        Math PhD. Research data analyst in a neurology lab.
-        I write about things I'm figuring out.
-      </p>
-      <div class="divider"></div>
-      <div class="now-label">now</div>
-      <div class="now-list">
-        <p><span>Reading</span> - ...</p>
-        <p><span>Building</span> - ...</p>
-        <p><span>Thinking about</span> - ...</p>
-      </div>
-    </div>
-
-    <!-- ── PROJECTS ───────────────────────────────────────── -->
-    <div class="page" id="projects">
-      <div class="section-label">Projects</div>
-      <div class="proj-list"></div>
-
-    </div>
-
-    <!-- ── WRITING ────────────────────────────────────────── -->
-    <div class="page" id="writing">
-      <div class="section-label">Writing</div>
-      <div class="post-list">
-
-        
-
-      </div>
-    </div>
-
-    <!-- ── ABOUT ──────────────────────────────────────────── -->
-    <div class="page" id="about">
-      <div class="section-label">About</div>
-      <div class="about-body">
-        <p>
-          I'm a research data analyst at a university neurology lab in Chicago,
-          working on <em>neuroimaging pipelines, QC infrastructure, and multimodal data</em>.
-          My PhD was in mathematics — category theory specifically.
-        </p>
-      </div>
-    </div>
-
+    <div id="content"></div>
+    
   </div><!-- /site-wrap -->
 
   <script>

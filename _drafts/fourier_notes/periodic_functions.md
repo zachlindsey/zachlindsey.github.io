@@ -1,6 +1,6 @@
 # Intro
 
-The Fourier transform and inverse transform are formally defined as something like
+The Fourier transform and inverse transform are formally defined as something like hi
 
 $$
 \begin{align*}
@@ -10,12 +10,12 @@ $$
 $$
 
 
-I'll normally write $\hat{f}$ for $\mathcal{F}[f]$ if the inverse trasnsform isn't involved. If we want to live in a fantasy world, we pretend
+I'll sometimes write $\hat{f}$ for $\mathcal{F}[f]$ or $\check{f}$ for $\mathcal{F}^{-1}[f]$.  If we want to live in a fantasy world, we pretend
 * Both the transform and inverse transform always exist
 * The inverse transform is the inverse of the transform
 * The integral might actually be a sum!
 
-But this is sadly not the case. Instead, there are a variety of different "spaces of things" on which the transforms are defined, and it's often not so clear how they all interact. And then there are things like Fourier series and discrete Fourier transforms, which complicate things even more. So let's untangle all this mess! Fourier analysis has a funny way of making you either pay  with  complications somewhere - either the transforms and their properties need care or the objects on which you apply them need care. This means I have to choose an end of the spectrum (no pun intended) to start on, and so I'll choose a somewhat complicated space of functions with nice transform properties. Here we go!
+But this is sadly not the case. Instead, there are a variety of different "spaces of things" on which the transforms are defined, and it's often not so clear which of these nice properties hold. And then there are things like Fourier series and discrete Fourier transforms, which complicate things even more. So let's untangle all this mess! Fourier analysis has a funny way of making you either pay  with  complications somewhere - either the transforms and their properties need care or the objects on which you apply them need care. This means I have to choose an end of the spectrum (no pun intended) to start on, and so I'll choose a somewhat complicated space of functions with nice transform properties. Here we go!
 
 # Schwartz Space
 
@@ -72,7 +72,7 @@ Now, this last integrand is in $\mathcal{S}$ so is the whole integral bounded. �
 
 $$ \frac{1}{2\pi} \int \int f(t) e^{-i\omega t} e^{i \omega x} dt d\omega $$
 
-We want to apply Fubini and compute $$\int e^{i\omega(x-t)} d\omega,$$ but this is actually a funny integral. Use finite bounds and assume $x \neq t$ and you get $$\int_{-L}^L e^{i\omega(x-t)} d\omega = \frac{e^{i\omega (x-t)}}{i(x-t)} \bigg|_{-L}^L = \frac{e^{iL(x-t)} - e^{-iL(x-t)}}{i(x-t)} = \frac{2\sin(L(x-t))}{x-t}$$ When $x = t$, the integral is just $2L$. In either case, it's clear that taking $L \rightarrow \infty$ is going to cause some problems, which is some foreshadowing of tricks to come. However, we can be sneaky. When $L = \frac{2\pi k}{x-t}$, this integral is just 0. So we're going to build some regions to take advantage of this. Here's the plan. Let $B_n(t)$ be defined as
+We want to apply Fubini and compute $$\int e^{i\omega(x-t)} d\omega,$$ but this is actually a funny integral. Use finite bounds and assume $x \neq t$ and you get $$\int_{-L}^L e^{i\omega(x-t)} d\omega = \frac{e^{i\omega (x-t)}}{i(x-t)} \bigg|_{-L}^L = \frac{e^{iL(x-t)} - e^{-iL(x-t)}}{i(x-t)} = \frac{2\sin(L(x-t))}{x-t}$$ When $x = t$, the integral is just $2L$. In either case, it's clear that taking $L \rightarrow \infty$ is going to cause some problems, which is some foreshadowing of tricks to come. However, we can be sneaky. When $L = \frac{2\pi k}{x-t}$, this integral is just 0. So we're going to build some regions to take advantage of this. Here's the plan. (TODO - A picture...) Let $B_n(t)$ be defined as
 
 $$B_n(t) = \begin{cases} \frac{2\pi n}{t-x} &\text{if } t > x+ \frac{1}{n} \\\\  \frac{2\pi n}{x-t} &\text{if } t < x - \frac{1}{n} \\\\ 2\pi n^2 &\text{else} \end{cases}$$
 
@@ -96,7 +96,7 @@ And wouldn't you know... that's exactly what we needed! The $\mathcal{F} \mathca
 
 ## Examples 
 
-Coming soon! The Gaussian will be the mascot 
+Coming soon! The Gaussian will be the mascot. TODO
 
 ## Summary
 
@@ -106,7 +106,7 @@ This is nice work so far! We have found a "base camp" of very nice functions on 
 + Forward and inverse transform cancel
 + Usual nice properties, like multiplication by $x$ => differentiation and differentiation => multplication by $\omega$.
 
-The issue is, of course, that the "base camp" is lacking in another way - there are lots of functions we want to do Fourier analysis on that definitely do not lie in $\mathcal{S}$! Periodic functions are a notable absence. And what do we make of discrete functions? Let's continue climbing...
+The issue is, of course, that the "base camp" is lacking in another way - there are lots of functions we want to do Fourier analysis on that definitely do not lie in $\mathcal{S}$! Periodic functions are a notable absence. And what do we make of functions only defined on $\mathbb{Z}$? Let's continue climbing...
 
 # Gathering Supplies...
 
@@ -128,7 +128,7 @@ I suppose we can denote this monstrosity of a space by $L^{p_\bullet; w_\bullet;
 
 ### Density Arguments in $L^p$
 
-Proving things about general elements of $L^p$ is usually hard. But there is a trick to let you prove things about them by reasoning about very simple functions. How simple? How about this: $\mathbb{I}\_{[a,b)}$, the indicator for an interval with $b-a < \infty$? That's very simple! These functions are all in $L^p$, since $\mathbb{I}\_\{[a,b)\}^p = \mathbb{I}\_\{[a,b)\}$. We'll then define a **simple function** as a finite sum $$s(x) = \sum\_n c\_n \mathbb{I}\{[a_n,b_n)\}(x),$$ where each $b_n - a_n < \infty$. The amazing fact about these functions is...
+Proving things about general elements of $L^p$ is usually hard. But there is a trick to let you prove things about them by reasoning about very simple functions. How simple? How about this: $\mathbb{I}\_{[a,b)}$, the indicator for an interval with $b-a < \infty$? That's very simple! These functions are all in $L^p$, since $\mathbb{I}\_\{[a,b)\}^p = \mathbb{I}\_\{[a,b)\}$. We'll then define a **simple function** as a finite sum $$s(x) = \sum\_n c\_n \mathbb{I}_\{[a_n,b_n)\}(x),$$ where each $b_n - a_n < \infty$. The amazing fact about these functions is...
 
 > **Density** The space of simple functions is dense in $L^p$ for all $1 \leq p < \infty$. That is, for any $f \in L^p$, there is a sequence $s_n$ of simple functions with $\\|s_n - f\\|_p \rightarrow 0$.
 
@@ -180,7 +180,7 @@ Now let $h \rightarrow 0$. Note we used the fact that $\tau_h$ is an isometry on
 **Generalization** Suppose $T: L^p \rightarrow L^q$ is any linear map with a constant $|T|$ such that $$\\| Tf \\|\_q \leq |T| \\| f\\|\_p$$ when $f$ is a simple function. Then $$\\| T f \\|\_q \leq |T| \\| f\\|\_p$$ for all functions $f \in L^p$.
 
 ## Convolutions, Approximate Identities
-Life will through many nasty functions at us, and we must find a way to deal with them. Much like applying an Instragram filter can make someone look much nicer, math has provided us with a "functional Instagram filter" in the form of convolutions. The definition:
+Life will throw many nasty functions at us, and we must find a way to deal with them. Much like applying an Instragram filter can make someone look much nicer, math has provided us with a "functional Instagram filter" in the form of convolutions. The definition:
 
 $$ (f \ast g)(x) = \int f(x-t) g(t) dt $$
 
@@ -188,7 +188,7 @@ when it exists, of course. Some basic properties when everything is defined:
 + $f \ast g = g \ast f$
 + $\ast$ is linear in each input 
 
-For existence, are pretty straightforward when both functions are $L^1$, since 
+For existence, things are pretty straightforward when both functions are $L^1$, since 
 
 $$\int |(f \ast g)(x)| dx \leq \int \int |f(x-t)g(t)|dt dx = \int \int |f(x-t)| |g(t)| dx dt \leq \\|f\\|_1 \int |g(t)| dt \leq \\|f\\|_1 \\|g\\|_1.$$
 
@@ -248,7 +248,7 @@ $$\begin{align*}
 \- \ast g &: L^q \rightarrow L^\infty, \text{ by Holder, where } \frac{1}{p} + \frac{1}{q} = 1
 \end{align*}$$
 
-So we can apply the interpolation formula: if we write $\frac{1}{s} = 1 - \theta  +\theta(1 - \frac{1}{p}) = 1 - \frac{\theta}{p},$ and $\frac{1}{t} = \frac{1-\theta}{p} = \frac{1}{p} - \frac{\theta}{p} = \frac{1}{p} + \frac{1}{s} - 1$, then we recover a result known as **Young's inequality**
+So we can apply the interpolation formula again: if we write $\frac{1}{s} = 1 - \theta  +\theta(1 - \frac{1}{p}) = 1 - \frac{\theta}{p},$ and $\frac{1}{t} = \frac{1-\theta}{p} = \frac{1}{p} - \frac{\theta}{p} = \frac{1}{p} + \frac{1}{s} - 1$, then we recover a result known as **Young's inequality**
 
 $$\text{if } \frac{1}{p} + \frac{1}{q} = \frac{1}{r} + 1 \text{, then } \ast: L^p \times L^q \rightarrow L^r$$ and furthermore $$\\| f \ast g \\|_r \leq \\| f \\|_p \\| g \\|_q.$$
 
@@ -280,7 +280,7 @@ Now that everything here is nice and bounded and compactly supported, we can app
 
 $$\limsup_{\varepsilon \rightarrow 0} \\| \phi_\varepsilon \ast f - f \\|\_p \leq (\\| \phi\_\varepsilon \\|_1 + 1 ) \\| f - s\\|_p ,$$ and now we let $s \rightarrow f$ in $L^p$ to finish up.
 
-To put a final cap on this little bit about smoothing, note this: If $f \in L^p$ and $\phi \in C^\infity_c$ is smooth and compactly supported with $\int \phi =1, then we know
+To put a final cap on this little bit about smoothing, note this: If $f \in L^p$ and $\phi \in C^\infty\_c$ is smooth and compactly supported with $\int \phi =1$, then we know
 * The functions $\phi_\varepsilon \ast f$ are also infinitely differentiable and remain in $L^p$
 * $\lim \phi_\varepsilon \ast f \rightarrow f$ in $L^p$.
 * $\phi_\varepsilon \ast f$ is compactly supported whenever $f$ is
@@ -310,11 +310,7 @@ Note that you'll often see this identity without the extra $2\pi$ factor. This i
 
 
 # $L^2$
-
-There is an obvious problem with Fourier analysis on $\mathcal{S}$: There really aren't that many interesting functions in it! We want to be able to analyze signals that don't decay, step functions, and periodic functions.  So the next stop on the Fourier tour will give us a bigger bank of functions but keep many nice properties of $\mathcal{F}$. Let $L^2$ be the set of measureable functions $f: \mathbb{R} \rightarrow \mathbb{C}$ such that $$\int |f|^2 dx < \infty,$$ where we make this small caveat: two functions $f_1, f_2$ will be treated as equal if $\\{x : f_1(x) \neq f_2(x) \\}$ has *measure zero*.  The space $L^2$ has some very nice properties: it is a Hilbert space with inner product $\langle f,g\rangle := \int f\overline{g}$. $\\|f\\|_2 = \sqrt{\langle f, f \rangle}$ is the $L^2\text{-norm}$.
-
-
-Now, let's see about defining the Fourier transform $\int f(x) e^{-i\omega x} dx$. We don't know that $f$ is integrable alone, so we can't bound this by $\int |f(x)| dx$, so we seem a little stuck. Why are we even talking about $L^2$? The sneaky trick is this - it's clear that $\mathcal{S} \subseteq L^2$ as vector spaces, and know how to define $\mathcal{F}$ on $\mathcal{S}$. What can we say about how this linear operator acts with respect to the $L^2$ inner product? There's this nice fact:
+Now, let's move on to the next nice space for Fourier analysis: $L^2$. It  has some very nice properties: it is a Hilbert space with inner product $\langle f,g\rangle := \int f\overline{g}$.  Now, let's see about defining the Fourier transform $\int f(x) e^{-i\omega x} dx$. We don't know that $f$ is integrable alone, so we can't bound this by $\int |f(x)| dx$, so we seem a little stuck. However, we can use density of $\mathcal{S}$ in $L^2$ to help us. Before doing that, take a look at this nice interplay between $\mathcal{F}$ and the $L^2$ inner product, where for now $f, g \in \mathcal{S}$:
 
 $$
 \begin{align*}
@@ -330,199 +326,16 @@ This identity will appear later, as it gives it a number of nice properties. For
 
 $$\\| \hat{f} \\|_2^2 = \langle \hat{f}, \hat{f} \rangle = \langle \check{\hat{f}}, \hat{f} \rangle = \langle f, f \rangle = \\|f\\|_2^2.$$
 
-Interesting... it seems that when we view $\mathcal{S}$ as a subspace of $L^2$, $\mathcal{F}$ is actually a linear isomorphism that perserves the norm! This lets us extend $\mathcal{F}$ a little bit: if $f_n \rightarrow f$ is a sequence $f_n \in \mathcal{S}$ of Schwarz functions approaching $f \in L^2$ in the sense that $\| f_n - f\|_2 \rightarrow 0$, then we can simply define $\hat{f} = \lim_n \hat{f_n}$, since $L^2$ is complete. Let $\overline{\mathcal{S}}$ be this bigger set of functions - the *closure* of $\mathcal{S}$ in $L^2$. We get "for free" that $$ \\|\hat{f}\\|_2 = \\|f\\|_2$$ for functions in $\overline{\mathcal{S}}$. (It's not really for free - there are a few things to check such as - does it depend on the sequence $f_n$? What if $f$ is actually already in $\mathcal{S}$? What about the fact that we only define functions up to changing them on a set of measure zero?)
+Interesting... it seems that when we view $\mathcal{S}$ as a subspace of $L^2$, $\mathcal{F}$ is actually a linear isomorphism that perserves the norm, and so the Fourier transform and its inverse extend to all of $L^2$! The formula is this... if $f \in L^2$, to compute $\mathcal{F}[f]$, then find a sequence of Schwartz functions $f_n \in \mathcal{S}$ such that $f_n \rightarrow f$ in $L^2$, and then define $$\mathcal{F}[f] := \lim_n \mathcal{F}[f_n].$$  The same recipe follows for $\mathcal{F}^{-1}$, and pretty much any identity you can prove about $\mathcal{F}$ on $\mathcal{S}$ will extend for free. Let's revisit some of the old properties from $\mathcal{S}$ and add some new ones.
 
-
-This leads to the obvious question... how big is $\overline{\mathcal{S}}$? In other words, what functions in $L^2$ can we approximate by elements of $\mathcal{S}$? The usual path to answer things like this is to successively approximate your random crazy function $f$ with nicer and nicer functions. Once we finish calculating what $\overline{\mathcal{S}}$ is, we will be able to get a lot of the nice properties of $\mathcal{F}$ from $\mathcal{S}$ to extend to $\overline{\mathcal{S}}$ automatically.
-
-
-## Approximating $f \in L^2$
-
-
-**Non-negative** To start, note that we can always split up a function as $f = f_+ - f_-$, with $f_+ \geq 0, f_- \geq 0$ by taking $f_+ = \max(f, 0)$ and $f_- = \max(-f, 0)$. Then $f^2 = f_+^2 + f_-^2$, so we can understand a lot about $L^2$ by understanding nonnegative functions in $L^2$. 
-
-**Compactly supported** It's much easier to deal with functions that are $0$ far away. If $f \geq 0$ is a nonnegative function in $L^2$, then consider the functions $\tau_n f = \mathbb{I}_{[-n,n]} f$, obtained by "truncating". Since $0 \leq \tau_n \leq f$, these are all still in $L^2$, and even better we find that $$\\| f - \tau_n f \\|_2^2 = \int (f - \tau_n f)^2$$ goes to 0 by the dominated convergence theorem. So all nonnegative elements of $L^2$ can be approximated by compactly supported nonnegative elements.
-
-**Quantized** Now suppose that $f \geq 0$ is in $L^2$ and supported on $[-N,N]$. We can split up the range of $f$ into bins $[\frac{k}{n}, \frac{k+1}{n})$ and "quantize" $f$ to get $q_n f$ defined by $$(q_n f)(x) = \frac{k}{n} \text{ if } f(x) \in \bigg[\frac{k}{n}, \frac{k+1}{n}\bigg).$$ Then $q_n f$...
-+ is in $L^2$, since $q_n f \leq f$
-+ is supported on $[-N, N]$
-+ only takes on the discrete values $\frac{k}{n}$ for $k \in \mathbb{N}$.
-+ is close to $f$ in the sence that $0 \leq f(x) - q_n f(x) \leq \frac{1}{n}$
-+ is close to $f$ in $L^2$, since $\int | f - q_n f|^2 = \int_{-N}^N | f - q_n f|^2 \leq 2N \frac{1}{n^2}$.
-
-**Finite** Now suppose we have one of these compactly supported quantized functions. Write it as $q(x) = \sum_n a_n \mathbb{I}\_{A_n}(x)$ with the $A_n$ all disjoint. We can compute the $L^2$ norm of it
-
-$$ \int q(x)^2 dx = \int \sum_n \sum_m a_n a_m \mathbb{I}\_{A_n}(x) \mathbb{I}\_{A_m}(x) dx = \int \sum_n a_n^2 \mathbb{I}\_{A_n}(x) dx = \sum_n a_n^2 |A_n| < \infty$$
-
-We can therefore pick a finite number of the $A_n$ and form $\sum_{|n| < N} a_n \mathbb{I}\_{A_n}(x)$ and approximate $q$ in $L^2$ to arbitrary precision. Note that it's essential that $\mathbb{I}\_{A_m} \mathbb{I}\_{A_n} = 0$ for everything to work out nicely.
-
-Let's take a quick pause. If $f \in L^2$ is aribtrary and $\varepsilon > 0$, then we've seen that we can...
-+ Write $f = f_+ - f_-$
-+ Find $f_+^c, f_-^c$ in $L^2$ compactly supported with $\\|f_\pm - f_\pm^c\\|_2 < \varepsilon$
-+ Find quantized compactly supported $f_\pm^q$ in $L^2$ with $\\|f_\pm^c - f_\pm^q\\|_2 < \varepsilon$
-+ Find a finite sum of compactly supported indicators $f_\pm^\text{finite}$ in $L^2$ with $\\|f_\pm^q - f_\pm^\text{finite}\\|_2 < \varepsilon$
-
-Putting these all together, we see that $\\|f - (f_+^\text{finite} - f_-^\text{finite} )\\|_2 < 6\varepsilon$.  So we have approximated functions in $L^2$ by finite sums of compactly supported indicator functions, which are very easy to understand! But we can go further...
-
-### Approximation by Schwarz Functions
-
-#### Convolving With Schwarz Functions
-Suppose that $A \subseteq \mathbb{R}$ is measurable and bounded, so $A \subseteq [-N,N]$ for some $N$. Then $\mathbb{I}_A$ is one of the functions that is used to build up the "quantized compactly supported" approximation of $f \in L^2$. Suppose that $\phi \in \mathcal{S}$ and consider this function:
-
-$$(\mathbb{I}_A \ast \phi)(x) := \int \mathbb{I}_A(t) \phi(x-t) dt = \int_A \phi(x-t) dt.$$ This is the **convolution** and it is also in $\mathcal{S}$, as it were! We can differentiate wrt $x$ under the integral sign because $\phi$ is so nice, and $\frac{d}{dx} (\mathbb{I}\_A \ast \phi) = \mathbb{I}\_A \ast \phi'$. On the other hand, 
-
-$$
-\begin{align*}
-&|x^n (\mathbb{I}\_A \ast \phi)| \\\\
-= &\bigg|x^n \int\_A \phi(x-t)dt\bigg| \\\\
-\leq &\int\_A |x^n \phi(x-t)| dt \\\\
-= &\int_A  \sum_k \binom{n}{k} \bigg|(x-t)^k t^{n-k} \phi(x-t) \bigg| dt \\\\
-\leq &\int_A  \sum_k \binom{n}{k} |t|^{n-k} \\| \phi \\|_{k, 0} dt \\\\
-\leq &\sum\_k \binom{n}{k} \\| \phi \\|\_{k, 0} \int\_A |t|^{n-k} dt \\\\
-\leq &\sum\_k \binom{n}{k} \\| \phi \\|\_{k, 0} 2 N^{n-K+1} \\\\
-< &\infty,
-\end{align*}
-$$
-
-Now, what was the point of that? Well, we have a family of functions in the Schwarz space $\mathbb{I}\_A \ast \phi$, somehow related to $\mathbb{I}\_A$, so maybe there is some way to pick $\phi$ that make it really close? Let's think about it. We're comparing
-
-$$\mathbb{I}\_A(x) \text{ vs. } \int_A \phi(x-t) dt$$
-
-So we want to make $\int_A \phi(x-t) dt \approx 0$ if $x \notin A$, and $\int_A \phi(x-t) dt \approx 1$ if $x \in A$. Changing coordinates, that's $\int_{x- A} \phi(s) ds \approx 0$ if $x \notin A$ and $\int_{x-A} \phi(s) ds \approx 1$ if $x \in A$. But $x \in A \Leftrightarrow 0 \in x - A$. So we want to try and arrange $\phi$ so that it's very large near 0 and very small everywhere else! Suppose that $\phi$ is a Schwartz function that satisfies these properties:
-
-+ $\phi \geq 0$
-+ $\int \phi = 1$
-+ $\phi(x) = 0$ if $|x| > 1$
-+ $\phi(x)$ is symmetric about $0$
-
-By scaling, we can force more mass near 0. Let $$\phi_\varepsilon(x) = \frac{1}{\varepsilon} \phi\bigg\( \frac{x}{\varepsilon}\bigg)$$
-
-Then we still have
-+ $\phi_\varepsilon \geq 0$
-+ $\int \phi_\varepsilon = 1$
-+ $\phi_\varepsilon(x) = 0$ if $|x| > \varepsilon$
-+ $\phi_\varepsilon(x)$ is symmetric about $0$
-
-Perhaps this will work for us. 
-
-TODO - Mandatory picture of bump functions and convolutions.
-
-#### Taking the Limit - Intervals
-Let's see about $$\lim_{\varepsilon \rightarrow 0} \mathbb{I}\_A \ast \phi_\varepsilon =^?_? \mathbb{I}\_A$$
-
-We can compute, assuming $|A| < \infty$, 
-
-$$
-\begin{align*}
-&\\| \mathbb{I}\_A - \mathbb{I}\_A \ast \phi_\varepsilon \\|^2_2 \\\\
-= &\int \bigg( \mathbb{I}\_A(x) - \int_A \phi_\varepsilon(x-t)dt \bigg)^2 dx \\\\
-= &\int \bigg\\{ \mathbb{I}\_A(x)^2 - 2 \mathbb{I}\_A(x) \int_A \phi_\varepsilon(x-t)dt + \bigg( \int_A \phi_\varepsilon(x-t)dt \bigg)^2 \bigg\\}dx \\\\
-= &|A| - 2 \int_A \int_A \phi_\varepsilon(x-t)dt dx + \int \bigg(\int_A \phi_\varepsilon(x-t)dt \bigg)^2dx
-\end{align*}
-$$
-
-Because $A$ can be a very nasty set, it's hard to make headway on this. Let's warmup by assuming that $A = [a,b]$ is an interval and see what we can do, because in this case we have some better control over how the support of $\phi_\varepsilon$ interacts with $A$:
-
-$$ \int_a^b \phi_\varepsilon (x-t) dt = \int_{x-b}^{x-a} \phi_\varepsilon(s) ds = \begin{cases} 
-0 \text{ if } x < a - \varepsilon \\\\
-1 \text{ if } x \in [a+\varepsilon, b-\varepsilon] \\\\
-0 \text{ if } x > b + \varepsilon  \\\\
-\frac{1}{2} \text{ if } x \in \\{a,b\\}\end{cases}$$
-
-Hence $$\lim_{\varepsilon \rightarrow 0} \int_a^b \phi_\varepsilon (x-t) dt = \mathbb{I}_{(a,b)}(x) + \frac{1}{2} \mathbb{I}\_{\\{a,b\\}}(x) $$
-
-So
-
-$$
-\begin{align*}
-&\lim_{\varepsilon \rightarrow 0}  \\| \mathbb{I}\_{[a,b]} - \mathbb{I}\_{[a,b]} \ast \phi_\varepsilon \\|^2_2 \\\\
-=\ &b-a - 2 \int_a^b \bigg\\{ \mathbb{I}\_{(a,b)}(x) + \frac{1}{2} \mathbb{I}\_{\\{a,b\\}}(x) \bigg\\}dx + \int \bigg( \mathbb{I}_{(a,b)}(x) + \frac{1}{2} \mathbb{I}\_{\\{a,b\\}}(x) \bigg)^2 dx \\\\
-=\ &b-a - 2(b-a) + b-a \\\\
-=\ &0
-\end{align*}
-$$
-
-Great! So we now know that $$\lim_{\varepsilon \rightarrow 0} \mathbb{I}\_A \ast \phi_\varepsilon = \mathbb{I}\_A \text{ (in } L^2 \text{)}$$ when $A$ is a closed bounded interval. It's not hard to see that the same computation works just as well if $A$ does not include one or both endpoints. And now we will make use of a tried and true principle of analysis:
-
-> If an identity holds for all intervals, you have a natural path to prove it holds for all measurable sets.
-
-#### Taking the Limit - Measurable Sets
-Let's sketch that path - a theorem called **Sierpiński–Dynkin's π-λ theorem**.
-
-If $P$ is a $\pi$-system and $D$ is a Dynkin system with $P \subseteq D$, then $\sigma\\{P\\} \subseteq D$.
-
-Let's unpack this a little bit. Here, $\sigma\\{ P \\}$ is the $\sigma$-algebra generated by $P$. On $\mathbb{R}$, the measurable sets are nothing other than the $\sigma$-algebra generated by the intervals. So $P = \\{ I \subseteq \mathbb{R} : I \text{ is an interval} \\}$ and then $\sigma\{P\} = \text{measurable sets}.$ In the application, we want $$D = \\{ A \subseteq \mathbb{R} : \text{your statement holds for } A\\}.$$ Then the theorem literally says
-
-$$\text{your statement holds for intervals} \Rightarrow \text{your statement holds for measurable sets}.$$
-
-NICE. This leaves us to check two things:
-
-+ What is a $\pi$-system, and is the set of all intervals one?
-+ What is a Dynkin system, and is the set of subsets for which my statement holds one?
-
-$\pi$-systems are easy: $P$ is a $\pi$-system iff it is nonempty and $A \in P, B \in P \Rightarrow A \cap B \in P$. Intervals definitely satisfy this.
-
-A Dynkin system is a bit more complicated. $D$ is a Dynkin system if
-1. $\mathbb{R} \in D$
-2. If $A, B \in D$ and $A \subseteq B$, then $B \setminus A \in D$
-3. If $A_1 \subseteq A_2 \subseteq A_3 \subseteq \cdots$ is an increasing sequence of elements of $D$, then $\bigcup_n A_n \in D$.
-
-So does our statement make a Dynkin system? Let's start by concretely formalizing the statement. It has a small wrinkle to make everything work nicely:
-
-> If $A$ is a measurable set and $J$ is a bounded interval, $\lim\_{\varepsilon \rightarrow 0} \mathbb{I}\_{A \cap J} \ast \phi_\varepsilon = \mathbb{I}\_{A\cap J} \text{ in } L^2.$
-
-1. We know this is true since we already proved our result for bounded intervals.
-2. Suppose $A \subseteq B$ and for all bounded intervals $J$, $\lim_{\varepsilon \rightarrow 0} \mathbb{I}\_{A\cap J} \ast \phi_\varepsilon = \mathbb{I}\_{A\cap J}$ and  $\lim_{\varepsilon \rightarrow 0} \mathbb{I}\_{B \cap J} \ast \phi_\varepsilon = \mathbb{I}\_{B \cap J}$ in $L^2$. Now, $$\mathbb{I}\_{B \cap J} = \mathbb{I}\_{A \cap J} + \mathbb{I}\_{(B \setminus A) \cap J},$$
-so $$\mathbb{I}\_{B \cap J} \ast \phi_\varepsilon = \mathbb{I}\_{A \cap J} \ast \phi_\varepsilon + \mathbb{I}\_{(B \setminus A) \cap J} \ast \phi_\varepsilon,$$
-and so the limit gives $$\mathbb{I}\_{B \cap J} = \mathbb{I}\_{A \cap J} + \lim_{\varepsilon \rightarrow 0 } \mathbb{I}\_{(B \setminus A) \cap J} \ast \phi_\varepsilon,$$ and rearranging finishes.
-3. Now suppose $A_1 \subseteq A_2 \subseteq \cdots$ with $\lim_{\varepsilon \rightarrow 0} \mathbb{I}\_{A_n \cap J} \ast \phi_\varepsilon = \mathbb{I}\_{A_n \cap J}$, and let $A = \bigcup_n A_n$. The natural way to proceed is splitting up the difference as 
-
-$$\\| \mathbb{I}\_{A \cap J} - \mathbb{I}\_{A \cap J} \ast \phi_\varepsilon \\|_2 \leq \\|  \mathbb{I}\_{A \cap J} -  \mathbb{I}\_{A_n \cap J} \\|_2 + \\| \mathbb{I}\_{A_n \cap J} - \mathbb{I}\_{A_n \cap J } \ast \phi\_\varepsilon \\|_2 + \\| (\mathbb{I}\_{A_n \cap J} - \mathbb{I}\_{A \cap J}) \ast \phi\_\varepsilon \\|_2$$
-
-with $n$ arbitrary to be chosen in a moment. Each of these terms demands a separate mini-proof to understand how to control them, which we do next.
-
-**$\ast \phi_\varepsilon$ is $L^2$ continuous** - Suppose $f \in L^2$ and $g \in \mathcal{S}$ is compactly supported with $\int g = 1$. Then
-$$\begin{align*}
-&\\| f \ast g \\|^2_2 \\\\
-= &\int \bigg( \int f(x-t) g(t) dt \bigg)^2 dx \\\\
-= &\int\int\int f(x-t)f(x-s) g(s) g(t) ds dt dx \\\\ 
-\leq & \\|f\\|_2^2 \int \int g(s) g(t) ds dt \\\\
-=  & \\|f\\|_2^2
-\end{align*}$$ 
-
-**Indicators converge in $L^2$** $$\int (\mathbb{I}\_{A \cap J} - \mathbb{I}\_{A_n \cap J})^2 dx = \int \mathbb{I}\_{A \cap J} + \mathbb{I}\_{A_n \cap J} - 2\mathbb{I}\_{A \cap J} \mathbb{I}\_{A_n \cap J} dx = |A \cap J| + |A_n \cap J| -  2\int\mathbb{I}\_{A_n \cap J} dx = |A\cap J | - |A_n \cap J| \rightarrow 0$$
-
-From these, we get 
-
-$$\\| \mathbb{I}\_{A\cap J} - \mathbb{I}\_{A\cap J} \ast \phi_\varepsilon \\|_2 \leq 2 \\|  \mathbb{I}\_{A \cap J} -  \mathbb{I}\_{A_n \cap J} \\|_2 + \\| \mathbb{I}\_{A_n \cap J } - \mathbb{I}\_{A_n \cap J} \ast \phi\_\varepsilon \\|_2.$$
-
-
-So $$\limsup\_{\varepsilon \rightarrow 0} \\| \mathbb{I}\_{A \cap J} - \mathbb{I}\_{A \cap J} \ast \phi_\varepsilon \\|_2 \leq 2 \\|  \mathbb{I}\_{A \cap J} -  \mathbb{I}\_{A_n \cap J} \\|_2,$$
-
-but $n$ was arbitrary and does not appear in the LHS, hence 
-$$ \lim\_{\varepsilon \rightarrow 0} \\| \mathbb{I}\_{A \cap J} - \mathbb{I}\_{A \cap J} \ast \phi_\varepsilon \\|_2  = 0$$
-
-### Summary
-Let's take stock of what we showed. We now know that if $A$ is *any* measurable bounded set and $\phi$ satisfies the conditions mentioned before, then
-1. $\mathbb{I}\_A \ast \phi_\varepsilon$ is a Schwartz function
-2. $\mathbb{I}\_A \ast \phi\_\varepsilon \rightarrow \mathbb{I}\_A$ in $L^2$
-
-This means that if $f = \sum\_n a\_n \mathbb{I}\_{A_n} $ is a finite sum of indicator functions with each $A_n$ bounded, then $f \ast \phi_\varepsilon$ is family of Schwarz functions approximating $f$ in $L^2$. Hence we can take one final step from the previous section and conclude:
-
-> If $f \in L^2$ and $\varepsilon > 0$, there is a Schwarz function $g$ such that $\\|f - g \\|_2 < \varepsilon$.
-
-
-## Extending $\mathcal{F}$
-
-We know now exactly how big $\overline{\mathcal{S}}$ is in $L^2$... it's *all of it*! In other words, **the set of Schwarz functions is dense in $L^2$**. And so the Fourier transform and its inverse extend to all of $L^2$! The formula is this... if $f \in L^2$, to compute $\mathcal{F}[f]$, then find a sequence of Schwartz functions $f_n \in \mathcal{S}$ such that $f_n \rightarrow f$ in $L^2$, and then define $$\mathcal{F}[f] := \lim_n \mathcal{F}[f_n].$$  The same recipe follows for $\mathcal{F}^{-1}$, and pretty much any identity you can prove about $\mathcal{F}$ on $\mathcal{S}$ will extend for free. Let's revisit some of the old properties from $\mathcal{S}$ and add some new ones.
-
-**Plancherel's Identity** The identity $$\\| \hat{f} \\|_2 = \\|f\\|_2$$ is one of the most important in all mathematics. We already showed it works for functions in $\mathcal{S}$ earlier. Let's show it works for any $f \in L^2$. Following the recipe, we let $f_n \rightarrow f$ be a sequence of Schwarz functions, and so $\hat{f} = \lim \hat{f_n}$. So $$\\|f\\|_2 = \lim_n \\| f_n \\|_2 = \lim_n \\| \hat{f_n} \\|_2 = \\| \hat{f}\\|_2.$$
+**Plancherel's Identity** The identity $$\\| \hat{f} \\\|_2 = \\|f\\|\_2$$ is fundamental. We already showed it works for functions in $\mathcal{S}$ earlier. Let's show it works for any $f \in L^2$. Following the recipe, we let $f_n \rightarrow f$ be a sequence of Schwarz functions, and so $\hat{f} = \lim \hat{f_n}$. So $$\\|f\\|_2 = \lim_n \\| f_n \\|_2 = \lim_n \\| \hat{f_n} \\|_2 = \\| \hat{f}\\|_2.$$
 
 **$\mathcal{F}$ is continuous** Suppose that $f_n \rightarrow f$ are any sequence of functions in $L^2$ converging to some other $f \in L^2$. Is it the case that $\hat{f_n} \rightarrow \hat{f}$? Well... $$\\| \hat{f} - \hat{f_n} \\|_2 = \\| \widehat{f - f_n} \\|_2 = \\| f - f_n \\| \rightarrow 0.$$ So yes!
 
 **$\mathcal{F} \mathcal{F}^{-1}$ is the identity** This is another good exercise in the "recipe". If $f \in L^2$, choose a sequence of approximating Schwarz functions $f_n \rightarrow f$. Then $\mathcal{F} f_n \rightarrow \mathcal{F} f$, and $f_n = \mathcal{F}^{-1} \mathcal{F} f_n \rightarrow \mathcal{F}^{-1} \mathcal{F} f$. But this means that $f_n$ converges to both $f$ and $\mathcal{F}^{-1} \mathcal{F} f$, hence they are the same.
 
-**Convolutions and Multiplications** We had some identities about how $\mathcal{F}$ behaved with respect to multiplication by $x$ and differentiation. While this two operations gave linear operators on $\mathcal{S}$, they definitely do not extend to $L^2$, unlike $\mathcal{F}$. But when they do, they work as expected. More explicitly, suppose that $f \in L^2$ and the function $xf(x)$ is also in $L^2$. If $f_n \in \mathcal{S}$ approximate $f$ in $L^2$, we hope that $xf_n(x) \rightarrow xf(x)$ in $L^2$. But this is sadly not the case!
+
+**Multiplication and Differeniation** We had some identities about how $\mathcal{F}$ behaved with respect to multiplication by $x$ and differentiation. While this two operations gave linear operators on $\mathcal{S}$, they definitely do not extend to $L^2$, unlike $\mathcal{F}$. But when they do, they work as expected. More explicitly, suppose that $f \in L^2$ and the function $xf(x)$ is also in $L^2$. If $f_n \in \mathcal{S}$ approximate $f$ in $L^2$, we hope that $xf_n(x) \rightarrow xf(x)$ in $L^2$. But this is sadly not the case! We'd like to upgrade $f_n$ to do multiple things at once: have $f_n$ and $xf_n$ both converage at the same time!
 
 
 
